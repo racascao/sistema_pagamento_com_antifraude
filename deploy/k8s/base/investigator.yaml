@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: investigator
+  namespace: payment-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: investigator
+  template:
+    metadata:
+      labels:
+        app: investigator
+    spec:
+      containers:
+        - name: investigator
+          image: payment-processor/investigator:local
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ledger-database
+                  key: url
+            - name: LEDGER_GRPC_ADDR
+              value: ledger:9001
+            - name: KAFKA_BROKER
+              value: redpanda:9092
+            - name: GEO_PROVIDER
+              value: static
+          ports:
+            - containerPort: 9103
+              name: metrics
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              memory: 128Mi

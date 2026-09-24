@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud
+  namespace: payment-processor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fraud
+  template:
+    metadata:
+      labels:
+        app: fraud
+    spec:
+      containers:
+        - name: fraud
+          image: payment-processor/fraud:local
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GRPC_ADDR
+              value: ":9002"
+            - name: GEO_PROVIDER
+              value: static
+          ports:
+            - containerPort: 9002
+            - containerPort: 9102
+              name: metrics
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fraud
+  namespace: payment-processor
+spec:
+  selector:
+    app: fraud
+  ports:
+    - port: 9002

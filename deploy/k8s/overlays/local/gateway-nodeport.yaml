@@ -1,0 +1,14 @@
+# Exposes the gateway on the kind node port mapped to localhost:8080
+# in deploy/kind/cluster.yaml.
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-external
+  namespace: payment-processor
+spec:
+  type: NodePort
+  selector:
+    app: gateway
+  ports:
+    - port: 8080
+      nodePort: 30080

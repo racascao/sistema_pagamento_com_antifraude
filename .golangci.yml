@@ -1,0 +1,43 @@
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - ineffassign
+    - misspell
+    - gocritic
+    - revive
+    - gosec
+    - unconvert
+    - prealloc
+  settings:
+    errcheck:
+      exclude-functions:
+        - (io.Closer).Close
+        - (io.ReadCloser).Close
+        - (*database/sql.DB).Close
+        - (*google.golang.org/grpc.ClientConn).Close
+        - (*github.com/segmentio/kafka-go.Writer).Close
+        - (*github.com/segmentio/kafka-go.Reader).Close
+        - (*github.com/segmentio/kafka-go.Conn).Close
+    revive:
+      rules:
+        - name: package-comments
+          disabled: true
+    gosec:
+      excludes:
+        - G404
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - gosec
+          - prealloc
+          - errcheck

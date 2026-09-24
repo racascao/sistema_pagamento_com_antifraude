@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# postgres.yaml and redpanda.yaml are local-only infrastructure (Cloud
+# SQL and Managed Kafka replace them in the gcp overlay), so they are
+# resources of the local overlay instead of this shared base.
+resources:
+  - namespace.yaml
+  - fraud.yaml
+  - ledger.yaml
+  - investigator.yaml
+  - gateway.yaml
+  - console.yaml
+  - metrics-services.yaml

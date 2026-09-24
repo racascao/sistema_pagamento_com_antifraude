@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package fraud.v1;
+
+option go_package = "github.com/huncoding/payment-processor-course/proto/gen/go/fraud/v1;fraudv1";
+
+service FraudService {
+  // TODO: Define the Score RPC
+}

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ledger
+  namespace: payment-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ledger
+  template:
+    metadata:
+      labels:
+        app: ledger
+    spec:
+      containers:
+        - name: ledger
+          image: payment-processor/ledger:local
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ledger-database
+                  key: url
+            - name: GRPC_ADDR
+              value: ":9001"
+            - name: FRAUD_GRPC_ADDR
+              value: fraud:9002
+            - name: KAFKA_BROKER
+              value: redpanda:9092
+          ports:
+            - containerPort: 9001
+            - containerPort: 9101
+              name: metrics
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ledger
+  namespace: payment-processor
+spec:
+  selector:
+    app: ledger
+  ports:
+    - port: 9001

@@ -1,0 +1,10 @@
+# Enforce LF line endings for scripts and Makefiles to guarantee WSL2 compatibility on Windows.
+*.sh text eol=lf
+Makefile text eol=lf
+*.proto text eol=lf
+*.sql text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+.gitignore text eol=lf
+.golangci.yml text eol=lf

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ledger
+  namespace: payment-processor
+spec:
+  template:
+    spec:
+      containers:
+        - name: ledger
+          env:
+            - name: KAFKA_BROKER
+              value: null
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-config
+                  key: broker
+            - name: KAFKA_SASL_MECHANISM
+              value: OAUTHBEARER

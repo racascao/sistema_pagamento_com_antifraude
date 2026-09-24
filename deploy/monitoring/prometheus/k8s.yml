@@ -1,0 +1,23 @@
+# Prometheus scrape config for the Kubernetes environments (kind and
+# EKS). Targets resolve through cluster DNS in the payment-processor
+# namespace.
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: gateway
+    static_configs:
+      - targets: ["gateway.payment-processor.svc:8080"]
+
+  - job_name: ledger
+    static_configs:
+      - targets: ["ledger-metrics.payment-processor.svc:9101"]
+
+  - job_name: fraud
+    static_configs:
+      - targets: ["fraud-metrics.payment-processor.svc:9102"]
+
+  - job_name: investigator
+    static_configs:
+      - targets: ["investigator-metrics.payment-processor.svc:9103"]

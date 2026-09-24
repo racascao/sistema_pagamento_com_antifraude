@@ -1,0 +1,22 @@
+# Prometheus scrape config for the docker compose environment.
+# The kind/EKS variant lives in deploy/monitoring/prometheus/k8s.yml.
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: gateway
+    static_configs:
+      - targets: ["gateway:8080"]
+
+  - job_name: ledger
+    static_configs:
+      - targets: ["ledger:9101"]
+
+  - job_name: fraud
+    static_configs:
+      - targets: ["fraud:9102"]
+
+  - job_name: investigator
+    static_configs:
+      - targets: ["investigator:9103"]

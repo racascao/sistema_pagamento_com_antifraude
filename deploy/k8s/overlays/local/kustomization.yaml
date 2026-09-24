@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - postgres.yaml
+  - redpanda.yaml
+  - ../../../monitoring
+  - gateway-nodeport.yaml
+  - grafana-nodeport.yaml
+
+secretGenerator:
+  - name: postgres-credentials
+    namespace: payment-processor
+    literals:
+      - password=postgres
+  - name: ledger-database
+    namespace: payment-processor
+    literals:
+      - url=postgres://postgres:postgres@postgres:5432/payments?sslmode=disable
+
+generatorOptions:
+  disableNameSuffixHash: true

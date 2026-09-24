@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package ledger.v1;
+
+option go_package = "github.com/huncoding/payment-processor-course/proto/gen/go/ledger/v1;ledgerv1";
+
+service LedgerService {
+  // TODO: Define Ledger RPCs
+}

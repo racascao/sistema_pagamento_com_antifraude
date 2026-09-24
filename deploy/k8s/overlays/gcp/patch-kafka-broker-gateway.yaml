@@ -1,0 +1,29 @@
+# Points gateway/ledger/investigator at the Managed Kafka bootstrap
+# address instead of the local Redpanda StatefulSet, which does not
+# exist in this overlay. The kafka-config ConfigMap is created by the
+# student before `kubectl apply -k` (see deploy/README.md) with:
+#   kubectl -n payment-processor create configmap kafka-config \
+#     --from-literal=broker=$(terraform -chdir=deploy/terraform output -raw kafka_bootstrap)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: payment-processor
+spec:
+  template:
+    spec:
+      containers:
+        - name: gateway
+          env:
+            - name: KAFKA_BROKER
+              value: null
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-config
+                  key: broker
+            # Managed Kafka requires SASL_SSL/OAUTHBEARER — see
+            # internal/platform/kafka/gcpauth.go. The token comes from
+            # Workload Identity (deploy/terraform/gke.tf), which needs
+            # the "default" KSA annotated per deploy/README.md step 4.
+            - name: KAFKA_SASL_MECHANISM
+              value: OAUTHBEARER

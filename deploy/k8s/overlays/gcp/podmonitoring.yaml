@@ -1,0 +1,60 @@
+# PodMonitoring resources tell the GKE-managed Prometheus collector
+# (enabled at the cluster level in deploy/terraform/gke.tf via
+# monitoring_config.managed_prometheus) which pods to scrape. Without
+# these, Managed Prometheus never sees the /metrics endpoints, even
+# though the Services in metrics-services.yaml exist.
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: gateway
+  namespace: payment-processor
+spec:
+  selector:
+    matchLabels:
+      app: gateway
+  endpoints:
+    - port: 8080
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: ledger
+  namespace: payment-processor
+spec:
+  selector:
+    matchLabels:
+      app: ledger
+  endpoints:
+    - port: 9101
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: fraud
+  namespace: payment-processor
+spec:
+  selector:
+    matchLabels:
+      app: fraud
+  endpoints:
+    - port: 9102
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: investigator
+  namespace: payment-processor
+spec:
+  selector:
+    matchLabels:
+      app: investigator
+  endpoints:
+    - port: 9103
+      path: /metrics
+      interval: 15s

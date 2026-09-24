@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - k8s-resources.yaml
+
+configMapGenerator:
+  - name: prometheus-config
+    namespace: payment-processor
+    files:
+      - prometheus.yml=prometheus/k8s.yml
+  - name: grafana-datasources
+    namespace: payment-processor
+    files:
+      - grafana/provisioning/datasources/prometheus.yml
+  - name: grafana-dashboard-provider
+    namespace: payment-processor
+    files:
+      - grafana/provisioning/dashboards/provider.yml
+  - name: grafana-dashboards
+    namespace: payment-processor
+    files:
+      - grafana/dashboards/payment-processor.json
+      - grafana/dashboards/technical.json
+
+generatorOptions:
+  disableNameSuffixHash: true

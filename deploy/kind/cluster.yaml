@@ -1,0 +1,14 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: payment-processor
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      # Exposes the gateway NodePort on localhost:8080.
+      - containerPort: 30080
+        hostPort: 8080
+        protocol: TCP
+      # Exposes Grafana on localhost:3000.
+      - containerPort: 30300
+        hostPort: 3000
+        protocol: TCP

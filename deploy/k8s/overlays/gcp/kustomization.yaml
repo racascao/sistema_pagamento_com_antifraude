@@ -1,0 +1,45 @@
+# GCP/GKE overlay. Postgres and Redpanda are NOT included here on
+# purpose: Cloud SQL and Managed Kafka (deploy/terraform/database.tf,
+# kafka.tf) replace them. Before `kubectl apply -k` the student must
+# create two objects this overlay assumes already exist (commands in
+# deploy/README.md):
+#   - Secret "ledger-database" key "url"      -> Cloud SQL connection string
+#   - ConfigMap "kafka-config" key "broker"   -> Managed Kafka bootstrap address
+#
+# Image names below are placeholders. Either edit them here, or run
+# from this directory:
+#   kustomize edit set image \
+#     payment-processor/gateway=REGION-docker.pkg.dev/PROJECT_ID/payment-processor/gateway:TAG \
+#     payment-processor/ledger=REGION-docker.pkg.dev/PROJECT_ID/payment-processor/ledger:TAG \
+#     payment-processor/fraud=REGION-docker.pkg.dev/PROJECT_ID/payment-processor/fraud:TAG \
+#     payment-processor/investigator=REGION-docker.pkg.dev/PROJECT_ID/payment-processor/investigator:TAG \
+#     payment-processor/console=REGION-docker.pkg.dev/PROJECT_ID/payment-processor/console:TAG
+# deploy/scripts/push-images.sh prints the exact command with REGION/
+# PROJECT_ID/TAG already filled in.
+
+resources:
+  - ../../base
+  - podmonitoring.yaml
+
+patches:
+  - path: patch-kafka-broker-gateway.yaml
+  - path: patch-kafka-broker-ledger.yaml
+  - path: patch-kafka-broker-investigator.yaml
+  - path: patch-fraud-scheduling.yaml
+
+images:
+  - name: payment-processor/gateway
+    newName: REGION-docker.pkg.dev/PROJECT_ID/payment-processor/gateway
+    newTag: TAG
+  - name: payment-processor/ledger
+    newName: REGION-docker.pkg.dev/PROJECT_ID/payment-processor/ledger
+    newTag: TAG
+  - name: payment-processor/fraud
+    newName: REGION-docker.pkg.dev/PROJECT_ID/payment-processor/fraud
+    newTag: TAG
+  - name: payment-processor/investigator
+    newName: REGION-docker.pkg.dev/PROJECT_ID/payment-processor/investigator
+    newTag: TAG
+  - name: payment-processor/console
+    newName: REGION-docker.pkg.dev/PROJECT_ID/payment-processor/console
+    newTag: TAG

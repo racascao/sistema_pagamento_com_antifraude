@@ -1,0 +1,27 @@
+# The fraud-inference node pool (deploy/terraform/gke.tf) carries a
+# NoSchedule taint on key "workload"="fraud-inference" so that only
+# the fraud service lands on the ARM (t2a) nodes. Without this
+# toleration + nodeSelector the fraud pods would simply schedule onto
+# the untainted core-services pool instead, defeating the point of
+# the dedicated pool. GKE also auto-taints every ARM node pool with
+# kubernetes.io/arch=arm64:NoSchedule, so that needs its own
+# toleration too or the pods stay Pending indefinitely.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud
+  namespace: payment-processor
+spec:
+  template:
+    spec:
+      nodeSelector:
+        workload: fraud-inference
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: fraud-inference
+          effect: NoSchedule
+        - key: kubernetes.io/arch
+          operator: Equal
+          value: arm64
+          effect: NoSchedule
