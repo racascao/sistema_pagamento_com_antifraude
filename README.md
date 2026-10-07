@@ -86,6 +86,7 @@ search_fraud_patterns against the running stack.
 
 ## Documentation
 
+- [Go course and project map](docs/estudo-go/index.md) (`make docs-serve` / `make docs-build`, via Docker)
 - docs/architecture.md, the system design and failure policy
 - docs/adr, every significant decision with its tradeoffs
 - docs/runbook.md, operating and debugging the local stack

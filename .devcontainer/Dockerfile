@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
     k6 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /go/pkg/mod /go/cache \
+    && chown -R vscode:vscode /go
+
 WORKDIR /workspace
 COPY ../ /workspace
 

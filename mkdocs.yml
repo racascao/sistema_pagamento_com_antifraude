@@ -1,0 +1,77 @@
+site_name: Go no payment-processor
+site_description: Estudo progressivo de Go a partir do código real do projeto
+site_url: https://racascao.github.io/sistema_pagamento_com_antifraude/
+repo_url: https://github.com/racascao/sistema_pagamento_com_antifraude
+repo_name: racascao/sistema_pagamento_com_antifraude
+docs_dir: docs
+site_dir: site
+theme:
+  name: material
+  language: pt-BR
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - search.highlight
+    - content.code.copy
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+nav:
+  - Início: index.md
+  - Curso de Go:
+      - Visão geral: estudo-go/index.md
+      - Como estudar: estudo-go/como-estudar.md
+      - Mapa do projeto: estudo-go/mapa-do-projeto.md
+      - Do conceito ao código: estudo-go/conceito-para-codigo.md
+      - Roadmap: estudo-go/roadmap.md
+  - Fundamentos:
+      - Visão geral: estudo-go/01-fundamentos/index.md
+      - Tipos, funções e estado: estudo-go/01-fundamentos/tipos-funcoes-estado.md
+      - Coleções e controle de fluxo: estudo-go/01-fundamentos/colecoes-fluxo.md
+      - Ponteiros, métodos e ciclo de vida: estudo-go/01-fundamentos/ponteiros-metodos.md
+  - Modelagem com Go: estudo-go/02-modelagem/index.md
+  - Interfaces e arquitetura:
+      - Visão geral: estudo-go/03-interfaces/index.md
+      - Interfaces na FSM: estudo-go/03-interfaces/interfaces-na-fsm.md
+  - Erros:
+      - Visão geral: estudo-go/04-erros/index.md
+      - Modelo e cadeia de erros: estudo-go/04-erros/cadeia-de-erros.md
+      - Erros e fallback na FSM: estudo-go/04-erros/fsm-erros.md
+  - Generics:
+      - Visão geral: estudo-go/05-generics/index.md
+      - Lendo a máquina genérica: estudo-go/05-generics/machine-generica.md
+  - Concorrência: estudo-go/06-concorrencia/index.md
+  - Context: estudo-go/07-context/index.md
+  - Testes e tooling:
+      - Visão geral: estudo-go/08-testes/index.md
+      - Testando a FSM: estudo-go/08-testes/testando-fsm.md
+  - Protobuf e gRPC: estudo-go/09-protobuf-grpc/index.md
+  - HTTP e SSE: estudo-go/10-http-sse/index.md
+  - FSM: estudo-go/11-fsm/index.md
+  - Cache: estudo-go/12-cache/index.md
+  - Postgres e Outbox: estudo-go/13-postgres-outbox/index.md
+  - Kafka: estudo-go/14-kafka/index.md
+  - Observabilidade: estudo-go/15-observabilidade/index.md
+  - MCP: estudo-go/16-mcp/index.md
+  - Performance: estudo-go/17-performance/index.md
+  - Go moderno: estudo-go/18-go-moderno/index.md
+  - Projeto:
+      - Arquitetura: architecture.md
+      - Runbook: runbook.md
+      - ADRs:
+          - Monorepo: adr/0001-monorepo-with-independent-deployments.md
+          - Postgres: adr/0002-postgres-as-the-single-database.md
+          - gRPC, HTTP e SSE: adr/0003-grpc-inside-http-at-the-edge.md
+          - Inferência nativa: adr/0004-native-tree-inference-in-go.md
+          - FSM: adr/0005-fsm-with-deterministic-fallback.md
+          - Outbox: adr/0006-outbox-for-event-publishing.md
+          - MCP: adr/0007-mcp-from-scratch.md
+          - Caches: adr/0008-in-process-caches-over-redis.md
+          - Console e métricas: adr/0009-metrics-in-grafana-workflow-in-console.md
+          - GCP: adr/0010-gcp-as-cloud-target.md
+          - Walking skeleton: adr/0011-console-first-walking-skeleton.md

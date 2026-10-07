@@ -3,7 +3,6 @@
 # Windows users: run these targets inside WSL2.
 
 SHELL := /bin/bash
-GOBIN := $(shell go env GOPATH)/bin
 COMPOSE := docker compose
 
 .PHONY: help
@@ -27,6 +26,14 @@ proto: ## Regenerate gRPC code from proto files
 .PHONY: build
 build: ## Compile all services
 	go build ./...
+
+.PHONY: docs-serve
+docs-serve: ## Serve the Go course at http://localhost:8000
+	$(COMPOSE) up --build -d mkdocs
+
+.PHONY: docs-build
+docs-build: ## Strictly build the MkDocs site in Docker
+	$(COMPOSE) run --rm mkdocs build --strict --site-dir /tmp/payment-processor-site
 
 ## ----- Local stack (Docker Compose) -----
 

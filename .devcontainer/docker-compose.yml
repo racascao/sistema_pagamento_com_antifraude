@@ -6,9 +6,12 @@ services:
       context: ..
       dockerfile: .devcontainer/Dockerfile
     ports:
-      - "8080:8080"
+      - "8090:8080"
     volumes:
       - ..:/workspace:cached
     command: sleep infinity
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
 

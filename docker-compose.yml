@@ -1,6 +1,17 @@
 name: payment-processor
 
 services:
+  mkdocs:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.mkdocs
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:ro
+    ports:
+      - "8000:8000"
+    command: ["serve", "--dev-addr=0.0.0.0:8000"]
+
   postgres:
     image: pgvector/pgvector:pg16
     environment:
