@@ -2,7 +2,7 @@
 
 ## O que você vai aprender
 
-Entender ponteiros, receivers, métodos, composição de structs e o papel de `defer` na liberação de recursos. A FSM fornece o exemplo principal; `defer` é introduzido como exemplo mínimo porque não aparece no Go atual do repositório.
+Entender ponteiros, receivers, métodos, composição de structs e o papel de `defer` na liberação de recursos. A FSM e o cache fornecem exemplos reais.
 
 ## Onde isso aparece no projeto
 
@@ -53,15 +53,21 @@ type Machine[T any] struct {
 
 `Machine` é composta por campos com responsabilidades específicas: estado inicial, mapas de configuração e limite de hops. Composição por campos não é herança. Go também permite *embedding* de um tipo como campo sem nome para promover métodos, mas `Machine` não usa esse recurso; a configuração explícita torna visível de onde cada parte vem.
 
-**Exemplo mínimo — liberação em uma operação futura do cache:**
+Origem: `pkg/memcache/memcache.go`:
 
 ```go
-target.mu.Lock()
-defer target.mu.Unlock()
-// operação sobre target.items
+func (cache *Cache[Value]) SetTTL(key string, value Value, ttl time.Duration) {
+	shard := cache.shardFor(key)
+	shard.mu.Lock()
+	defer shard.mu.Unlock()
+	shard.items[key] = entry[Value]{
+		value:     value,
+		expiresAt: cache.now().Add(ttl),
+	}
+}
 ```
 
-**No payment-processor:** `pkg/memcache/memcache.go` declara `mu sync.RWMutex` e `items`, mas ainda não contém métodos de leitura ou escrita. O trecho acima não foi implementado. `defer` executaria o `Unlock` ao sair da função, inclusive por `return` ou panic, depois de `Lock` ter sido adquirido. Não o coloque dentro de um loop longo sem considerar quanto tempo o lock ficaria retido.
+`SetTTL` usa receiver de ponteiro porque a operação altera o mesmo cache compartilhado: seleciona um shard existente, obtém seu lock e escreve em seu mapa. Copiar `Cache` seria inadequado: além de copiar campos de controle como `sync.Once`, não representaria a mesma identidade nem o mesmo ciclo de vida do cache. `defer` executa `Unlock` ao sair da função, inclusive por `return` ou panic, depois de `Lock` ter sido adquirido. Não o coloque dentro de um loop longo se a intenção for liberar o lock em cada iteração.
 
 ## Como funciona por dentro
 
@@ -69,7 +75,7 @@ Passar um ponteiro copia o endereço, não o valor inteiro. A memória pode ir p
 
 ## Por que foi feito assim, alternativas e armadilhas
 
-Passar payload por valor isolaria mudanças como `score`; retornar uma cópia a cada handler tornaria a assinatura mais complexa. Um `Machine` configurado pode ser reutilizado em execuções sequenciais; configurar mapas enquanto outras goroutines chamam `Run` exigiria sincronização que o pacote não implementa. O comentário do código pede construir uma vez e só depois reutilizar. `Cache` declara `sync.Once` e `stop` para um ciclo de vida futuro, mas seu `janitor` está vazio: ainda não existe `Close`.
+Passar payload por valor isolaria mudanças como `score`; retornar uma cópia a cada handler tornaria a assinatura mais complexa. Um `Machine` configurado pode ser reutilizado em execuções sequenciais; configurar mapas enquanto outras goroutines chamam `Run` exigiria sincronização que o pacote não implementa. O comentário do código pede construir uma vez e só depois reutilizar. O cache inicia seu janitor em `New`; `Close` fecha o canal de parada uma única vez com `sync.Once`. A discussão completa de locks e ownership fica em [Concorrência](../06-concorrencia/index.md).
 
 ## Go idiomático e Go moderno
 
@@ -85,7 +91,7 @@ Escolha receiver de ponteiro quando o método modifica o valor ou quando copiar 
 
 - [ ] Sei diferenciar `T` de `*T` neste fluxo.
 - [ ] Entendo por que `Handle` devolve `*Machine[T]`.
-- [ ] Sei o que `defer` garantiria no exemplo e que ele ainda não está no cache.
+- [ ] Sei o que `defer` garante no `SetTTL` real.
 - [ ] Não confundo ponteiros com segurança concorrente.
 
 ## Próximo passo

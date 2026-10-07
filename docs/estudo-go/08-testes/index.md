@@ -1,12 +1,12 @@
 # Testes e tooling
 
-**Estado:** laboratório de testes da FSM completo; benchmarks e testes de serviços permanecem planejados. Veja o [roadmap](../roadmap.md).
+**Estado:** laboratório da FSM e testes de cache concorrente disponíveis; benchmarks e testes de serviços permanecem planejados. Veja o [roadmap](../roadmap.md).
 
 ## Onde isso aparece no projeto
 
-Os testes disponíveis estão em `pkg/fsm/fsm_test.go`; `TestRun` usa uma tabela com um caso, e os outros testes cobrem fallback e wrapping. Leia [Testando a FSM](testando-fsm.md) para entender o que cada teste prova e o que ainda falta. Não há benchmark Go neste checkout.
+`pkg/fsm/fsm_test.go` cobre caminho feliz, fallback e wrapping; `pkg/memcache/memcache_test.go` cobre TTL, incremento atômico, acesso concorrente e janitor. `TestRun` usa uma tabela com um caso. Leia [Testando a FSM](testando-fsm.md) para entender esse primeiro laboratório, [Concorrência](../06-concorrencia/index.md) para limites do race detector e [Cache](../12-cache/index.md) para o segundo. Não há benchmark Go neste checkout.
 
-Fontes: `pkg/fsm/fsm_test.go`; `Makefile` e `go.mod`.
+Fontes: `pkg/fsm/fsm_test.go`, `pkg/memcache/memcache_test.go`; `Makefile` e `go.mod`.
 
 ## O que você vai aprender
 

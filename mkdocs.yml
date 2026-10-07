@@ -29,37 +29,37 @@ nav:
       - Mapa do projeto: estudo-go/mapa-do-projeto.md
       - Do conceito ao código: estudo-go/conceito-para-codigo.md
       - Roadmap: estudo-go/roadmap.md
-  - Fundamentos:
+  - 1. Fundamentos:
       - Visão geral: estudo-go/01-fundamentos/index.md
       - Tipos, funções e estado: estudo-go/01-fundamentos/tipos-funcoes-estado.md
       - Coleções e controle de fluxo: estudo-go/01-fundamentos/colecoes-fluxo.md
       - Ponteiros, métodos e ciclo de vida: estudo-go/01-fundamentos/ponteiros-metodos.md
-  - Modelagem com Go: estudo-go/02-modelagem/index.md
-  - Interfaces e arquitetura:
+  - 2. Modelagem com Go: estudo-go/02-modelagem/index.md
+  - 3. Interfaces e arquitetura:
       - Visão geral: estudo-go/03-interfaces/index.md
       - Interfaces na FSM: estudo-go/03-interfaces/interfaces-na-fsm.md
-  - Erros:
+  - 4. Erros:
       - Visão geral: estudo-go/04-erros/index.md
       - Modelo e cadeia de erros: estudo-go/04-erros/cadeia-de-erros.md
       - Erros e fallback na FSM: estudo-go/04-erros/fsm-erros.md
-  - Generics:
+  - 5. Generics:
       - Visão geral: estudo-go/05-generics/index.md
       - Lendo a máquina genérica: estudo-go/05-generics/machine-generica.md
-  - Concorrência: estudo-go/06-concorrencia/index.md
-  - Context: estudo-go/07-context/index.md
-  - Testes e tooling:
+  - 6. Testes e tooling:
       - Visão geral: estudo-go/08-testes/index.md
       - Testando a FSM: estudo-go/08-testes/testando-fsm.md
-  - Protobuf e gRPC: estudo-go/09-protobuf-grpc/index.md
-  - HTTP e SSE: estudo-go/10-http-sse/index.md
-  - FSM: estudo-go/11-fsm/index.md
-  - Cache: estudo-go/12-cache/index.md
-  - Postgres e Outbox: estudo-go/13-postgres-outbox/index.md
-  - Kafka: estudo-go/14-kafka/index.md
-  - Observabilidade: estudo-go/15-observabilidade/index.md
-  - MCP: estudo-go/16-mcp/index.md
-  - Performance: estudo-go/17-performance/index.md
-  - Go moderno: estudo-go/18-go-moderno/index.md
+  - 7. FSM: estudo-go/11-fsm/index.md
+  - 8. Concorrência: estudo-go/06-concorrencia/index.md
+  - 9. Context: estudo-go/07-context/index.md
+  - 10. Cache, sharding e TTL: estudo-go/12-cache/index.md
+  - 11. Protobuf e gRPC: estudo-go/09-protobuf-grpc/index.md
+  - 12. HTTP e SSE: estudo-go/10-http-sse/index.md
+  - 13. Postgres, idempotência e Outbox: estudo-go/13-postgres-outbox/index.md
+  - 14. Kafka / Redpanda: estudo-go/14-kafka/index.md
+  - 15. Observabilidade: estudo-go/15-observabilidade/index.md
+  - 16. MCP: estudo-go/16-mcp/index.md
+  - 17. Performance: estudo-go/17-performance/index.md
+  - 18. Go moderno: estudo-go/18-go-moderno/index.md
   - Projeto:
       - Arquitetura: architecture.md
       - Runbook: runbook.md

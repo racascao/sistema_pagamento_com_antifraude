@@ -8,14 +8,14 @@
 | [Modelagem](02-modelagem/index.md) | Introdução | Fundamentos | Migrações e tipos futuros de domínio |
 | [Interfaces](03-interfaces/index.md) | Semântica de Go completa; portas de serviço planejadas | Fundamentos | `error`, `context.Context`, métodos de `pkg/fsm` |
 | [Erros](04-erros/index.md) | Modelo e fallback completos; tradução de transporte planejada | Interfaces | `pkg/fsm` e seus testes |
-| [Generics](05-generics/index.md) | Estudo da FSM completo; outros mecanismos futuros | Interfaces | FSM e cache parcial |
-| [Concorrência](06-concorrencia/index.md) | Introdução | Fundamentos | Cache e futuro batcher |
+| [Generics](05-generics/index.md) | Estudo da FSM completo; cache como segunda instância | Interfaces | FSM e `pkg/memcache` |
+| [Concorrência](06-concorrencia/index.md) | Parcial: memória compartilhada, locks, shards, TTL, janitor, channel de sinalização, `select` e race detector; `WaitGroup` no lifecycle e channels de dados/pipelines pendentes | Fundamentos | `pkg/memcache` |
 | [Context](07-context/index.md) | Introdução | Erros, concorrência | FSM; chamada distribuída futura |
-| [Testes](08-testes/index.md) | Laboratório da FSM completo; benchmarks futuros | Fundamentos, erros, generics | Testes da FSM |
+| [Testes](08-testes/index.md) | FSM completo e testes de cache concorrente; benchmarks futuros | Fundamentos, erros, generics | Testes da FSM e do cache |
 | [Protobuf e gRPC](09-protobuf-grpc/index.md) | Introdução | Interfaces, context | Contratos sem RPCs |
 | [HTTP e SSE](10-http-sse/index.md) | Introdução | Context, gRPC | Gateway ainda mínimo |
-| [FSM](11-fsm/index.md) | Introdução | Generics, erros | Motor em `pkg/fsm` |
-| [Cache](12-cache/index.md) | Introdução | Generics, concorrência | `pkg/memcache` parcial |
+| [FSM](11-fsm/index.md) | Estudo integrado de mecanismo, trace e fallback | Generics, erros, testes | Motor em `pkg/fsm` |
+| [Cache](12-cache/index.md) | Laboratório funcional de TTL, janitor e sharding | Generics, concorrência | `pkg/memcache` |
 | [Postgres e Outbox](13-postgres-outbox/index.md) | Introdução | Modelagem, erros | Migrações SQL |
 | [Kafka](14-kafka/index.md) | Introdução | Outbox, concorrência | Configuração Redpanda; cliente futuro |
 | [Observabilidade](15-observabilidade/index.md) | Introdução | HTTP, gRPC | Configuração Prometheus/Grafana |

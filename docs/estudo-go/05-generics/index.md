@@ -1,6 +1,6 @@
 # Generics
 
-**Estado:** capítulo completo com a FSM como laboratório. O cache é uma segunda instância de mecanismo genérico, ainda parcial. Veja o [roadmap](../roadmap.md).
+**Estado:** capítulo completo com a FSM como laboratório. O cache é uma segunda instância funcional de mecanismo genérico. Veja o [roadmap](../roadmap.md).
 
 ## Onde isso aparece no projeto
 

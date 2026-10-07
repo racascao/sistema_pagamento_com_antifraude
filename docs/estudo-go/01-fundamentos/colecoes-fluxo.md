@@ -29,7 +29,17 @@ type Cache[V any] struct {
 }
 ```
 
-`[shardCount]*shard[V]` é um **array** de 16 ponteiros. A escolha fixa a quantidade na construção do cache; não cresce com `append`. O comentário acima omite campos apenas neste trecho didático.
+`[shardCount]*shard[V]` é um **array** de 16 ponteiros. A escolha fixa a quantidade na construção do cache; não cresce com `append`. O construtor percorre seus índices e inicializa cada `map`:
+
+```go
+for i := range cache.shards {
+	cache.shards[i] = &shard[Value]{
+		items: make(map[string]entry[Value]),
+	}
+}
+```
+
+`range` sobre o array fornece cada índice. Esse array não é um slice: `len(cache.shards)` é sempre 16 e `cap` não é uma propriedade separada para ele.
 
 Origem: `pkg/fsm/fsm.go`:
 
@@ -54,6 +64,18 @@ if !ok {
 ```
 
 O mapa usa `State` como chave. O booleano `ok` distingue ausência de handler de um valor zero presente. Há uma sutileza: registrar um handler `nil` produziria `ok=true`, mas chamá-lo causaria panic. Esse caso não é validado pelo código atual.
+
+Origem: `pkg/memcache/memcache.go`:
+
+```go
+currentEntry, ok := shard.items[key]
+if !ok || cache.now().After(currentEntry.expiresAt) {
+	var zero Value
+	return zero, false
+}
+```
+
+Aqui `items` é `map[string]entry[Value]`: a chave é a string recebida por `Get`; o valor contém o payload e seu instante de expiração. `ok` separa chave ausente de uma entrada presente cujo payload seja o zero value de `Value`. Para uma entrada expirada, `Get` também devolve zero e `false`; ela só é removida fisicamente na próxima varredura do janitor.
 
 Origem: `pkg/fsm/fsm.go`:
 
@@ -80,7 +102,7 @@ default:
 
 ## Como funciona por dentro
 
-Um slice guarda ponteiro para array, comprimento e capacidade. Copiar o slice copia esse cabeçalho, não todos os elementos. Dois slices podem observar alterações no mesmo array até uma expansão realocar um deles. O mapa é uma estrutura mutável; não é seguro escrever e ler simultaneamente sem coordenação. O cache declara `sync.RWMutex` por shard, mas as operações de cache ainda não existem. Veja [Concorrência](../06-concorrencia/index.md).
+Um slice guarda ponteiro para array, comprimento e capacidade. Copiar o slice copia esse cabeçalho, não todos os elementos. Dois slices podem observar alterações no mesmo array até uma expansão realocar um deles. O mapa é uma estrutura mutável; não é seguro escrever e ler simultaneamente sem coordenação. No cache, cada mapa pertence a um shard e é protegido por seu `sync.RWMutex`; veja [Concorrência](../06-concorrencia/index.md).
 
 ## Por que foi feito assim, alternativas e armadilhas
 
