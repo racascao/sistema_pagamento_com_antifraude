@@ -120,7 +120,7 @@ O compilador pode gerar instâncias especializadas ou compartilhar implementaç�
 - Os quatro `cmd/*/main.go` imprimem mensagens diferentes. Uma abstração genérica para essas poucas linhas esconderia pontos de entrada simples.
 - `Machine[any]` deslocaria o tipo do payload para assertions em runtime; não é a mesma reutilização segura de `Machine[payload]`.
 
-`AGENTS.md` prefere três linhas parecidas a uma generalização precoce. `Cache[V]` é outra abstração real de mecanismo; `pkg/batch` ainda está vazio, portanto não serve como exemplo implementado.
+`AGENTS.md` prefere três linhas parecidas a uma generalização precoce. `Cache[V]` e `Batcher[In, Out]` são outras abstrações reais de mecanismo; o último mantém, de forma estática, a relação entre itens submetidos e resultados do flusher. Veja [Canais de dados e batcher](../06-concorrencia/batcher.md).
 
 ## Biblioteca padrão genérica moderna
 

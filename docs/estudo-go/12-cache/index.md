@@ -23,6 +23,12 @@ type Cache[Value any] struct {
 
 `Cache[Value]` mantém o tipo do valor estático, como `Cache[int]` nos testes. `entry` associa o payload ao instante em que deixa de ser válido. Sharding não é recurso de Go: é a decisão de dividir o estado em várias estruturas menores para reduzir contenção. Go fornece as peças — array, `map`, método e lock.
 
+## Classificação do componente
+
+Este é um **cache local em processo com TTL**, fragmentado em shards. Cada shard reúne um mapa e um `sync.RWMutex`; como a escolha da chave determina também qual lock será usado, a técnica é **lock striping**. Ela não é sharding de banco ou de cache distribuído: não há nós, réplica, roteamento de rede nem dados compartilhados entre processos.
+
+O janitor é um **background reaper**: uma goroutine que remove periodicamente entradas já expiradas. TTL, sharding e limpeza são escolhas de implementação distintas; um cache pode usar uma sem usar as outras.
+
 ```go
 func (cache *Cache[Value]) shardFor(key string) *shard[Value] {
 	h := fnv.New32a()
@@ -72,5 +78,11 @@ Não há `context.Context` nessa API. O proprietário que cria o cache deve cham
 ## Limites do componente atual
 
 O cache é local ao processo, não é Redis e não oferece invalidação distribuída. `Len` conta as entradas presentes nos mapas no momento das leituras de cada shard, não uma visão global transacional. A quantidade de shards é fixa em 16 e não foi justificada por benchmark neste checkout.
+
+### Isto é Cache-Aside?
+
+Ainda não há evidência para classificar o uso como **Cache-Aside**. Esse padrão exige um consumidor que, em um miss, carregue a fonte de verdade, preencha o cache e devolva o valor. Os testes exercitam apenas a API do componente e nenhuma aplicação importa `pkg/memcache` para realizar esse fluxo. O ADR descreve usos futuros de cache de velocidade e semântico; intenção arquitetural não prova o padrão de integração.
+
+Veja a classificação comparada em [Padrões no projeto](../padroes-no-projeto.md), a coordenação entre shards em [Concorrência](../06-concorrencia/index.md) e generics em [Generics](../05-generics/machine-generica.md).
 
 Para entender `RWMutex`, data race e contenção, veja [Concorrência](../06-concorrencia/index.md). Para entender o parâmetro `Value`, veja [Generics](../05-generics/machine-generica.md).

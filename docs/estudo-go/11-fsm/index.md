@@ -83,11 +83,38 @@ Isso não transforma fallback em mecanismo de erro: `error` e `errors.Is` perten
 
 `maxHops` limita ciclos de handlers. Ele não prova que a topologia é acíclica e a mensagem de erro atual contém o estado em que o limite foi atingido. A máquina não sincroniza suas configurações: construa-a antes de compartilhá-la entre goroutines, como pede o comentário do tipo. Ela também não implementa nenhum pipeline de fraude; o ADR descreve intenção futura, não uma configuração existente.
 
+## Que padrão é este?
+
+O componente é uma **máquina de estados finita explícita**: o estado atual identifica uma função, a função produz o próximo estado e `Run` registra a transição. Estados, terminais, limite de hops e fallback são a topologia configurável do motor; a regra de fraude que escolheria essa topologia ainda não existe neste checkout.
+
+Isso não é automaticamente a implementação literal do padrão GoF **State**. No State clássico, objetos que representam cada estado costumam encapsular o comportamento e trocar o objeto de estado do contexto. Uma FSM pode ser feita com `switch`, tabelas, enums, funções em mapa ou tipos por estado. Aqui ela usa `State` como identificador e um mapa de handlers; não há um objeto Go distinto para cada estado. A relação é de família de soluções — não de equivalência obrigatória.
+
+| Questão | Implementação atual |
+|---|---|
+| Estado | `State`, baseado em `string` |
+| Evento/execução | chamada de `Handler[Data]` |
+| Transição | retorno `(State, error)` e registro `Transition` |
+| Política de recuperação | `FallbackTo`, configurado fora do handler |
+| Auditoria | trace com origem, destino retornado, duração e erro |
+
+`map`, funções, métodos, generics e múltiplos retornos são recursos da linguagem Go. `context`, `errors`, `fmt` e `time` são biblioteca padrão. A FSM e sua política de fallback são decisões de design. O quadro completo está em [Padrões no projeto](../padroes-no-projeto.md).
+
+## Quando faz sentido — e quando não
+
+Uma FSM ajuda quando o fluxo tem estados nomeados, transições auditáveis, caminhos terminais e recuperação explícita. Para uma sequência curta e linear sem bifurcações reais, uma função comum é mais simples; introduzir estados apenas para refletir linhas de código adiciona configuração sem esclarecer a regra.
+
 ## Exercícios
 
 - Localize em `Run` a ordem entre chamar o handler, criar a transição e consultar fallback.
 - Explique por que `Machine[payload]` não precisa saber o tipo concreto `payload` do teste.
 - Desenhe o trace produzido por `TestFallbackKeepsPipelineAvailable` e identifique onde a falha permanece acessível.
+- Compare esta implementação com o State do GoF: o que seria necessário mudar para ter um objeto por estado?
+
+## Checklist
+
+- [ ] Sei apontar estado, execução, transição e terminal no código real.
+- [ ] Sei explicar por que FSM e State do GoF se relacionam, mas não são sinônimos.
+- [ ] Sei separar o motor implementado da futura política de fraude.
 
 ## Próximo passo
 

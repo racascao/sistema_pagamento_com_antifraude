@@ -10,7 +10,9 @@ Comece por [Como estudar](estudo-go/como-estudar.md) e depois avance para [Funda
 
 ## Projeto usado no estudo
 
-O repositório reúne os executáveis `gateway`, `ledger`, `fraud` e `investigator`. Neste momento, seus `main` ainda são pontos de entrada mínimos; a comunicação gRPC, Kafka e os fluxos completos descritos na arquitetura permanecem etapas futuras. Os estudos de caso funcionais são `pkg/fsm` e `pkg/memcache`.
+O repositório reúne os executáveis `gateway`, `ledger`, `fraud` e `investigator`. Neste momento, seus `main` ainda são pontos de entrada mínimos; a comunicação gRPC, Kafka e os fluxos completos descritos na arquitetura permanecem etapas futuras. Os estudos de caso funcionais são `pkg/fsm`, `pkg/memcache` e `pkg/batch`.
+
+O payment-processor é o projeto central do curso: um sistema distribuído de pagamentos usado para estudar Go avançado, concorrência, comunicação entre serviços, consistência, antifraude e arquitetura de produção. [Conheça a visão completa do projeto](visao-do-projeto.md).
 
 As fontes de arquitetura e operação permanecem em [Arquitetura](architecture.md), [Runbook](runbook.md) e [ADRs](adr/0001-monorepo-with-independent-deployments.md).
 

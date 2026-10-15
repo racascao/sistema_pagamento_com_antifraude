@@ -1,0 +1,338 @@
+{
+  "success": [
+    {
+      "title": "Golang Avançado: construindo um processador de pagamentos de verdade",
+      "source": "https://huncoding.com/golang-avancado-curso-udemy/",
+      "date": "2026-10-01",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/golang-avancado-curso-udemy.md"
+    },
+    {
+      "title": "Proposta do time do Go para 1.28: Set, Map ordenado e heap genérico na stdlib",
+      "source": "https://huncoding.com/go-colecoes-genericas-stdlib/",
+      "date": "2026-09-17",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-colecoes-genericas-stdlib.md"
+    },
+    {
+      "title": "Genkit Go 1.0: o framework do Google para construir aplicações de IA em Go",
+      "source": "https://huncoding.com/genkit-go-framework-ia/",
+      "date": "2026-09-02",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/genkit-go-framework-ia.md"
+    },
+    {
+      "title": "Por que o Google diz que Go é a linguagem ideal para desenvolvimento assistido por IA",
+      "source": "https://huncoding.com/go-ideal-para-ia-engenharia-software/",
+      "date": "2026-08-10",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-ideal-para-ia-engenharia-software.md"
+    },
+    {
+      "title": "Ponteiros Fracos em Go: Evitando Memory Leaks em Caches com weak.Pointer",
+      "source": "https://huncoding.com/go-ponteiros-fracos-weak-pointer-cache/",
+      "date": "2026-07-06",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-ponteiros-fracos-weak-pointer-cache.md"
+    },
+    {
+      "title": "testing/synctest: O Jeito Certo de Testar Código Concorrente em Go",
+      "source": "https://huncoding.com/go-synctest-testando-codigo-concorrente/",
+      "date": "2026-06-07",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-synctest-testando-codigo-concorrente.md"
+    },
+    {
+      "title": "GOMAXPROCS e Kubernetes: o problema que todo mundo tinha e ninguém sabia",
+      "source": "https://huncoding.com/gomaxprocs-kubernetes-problema/",
+      "date": "2026-05-14",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/gomaxprocs-kubernetes-problema.md"
+    },
+    {
+      "title": "LLM do Zero em Go: como máquinas leem texto",
+      "source": "https://huncoding.com/llm-do-zero-como-maquinas-leem-texto/",
+      "date": "2026-05-04",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/llm-do-zero-como-maquinas-leem-texto.md"
+    },
+    {
+      "title": "Go Survey 2025: Gin ainda domina e mais dados sobre o uso da linguagem",
+      "source": "https://huncoding.com/go-survey-2025-gin-domina/",
+      "date": "2026-04-28",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-survey-2025-gin-domina.md"
+    },
+    {
+      "title": "CDKTF em Go: escreva sua infraestrutura Terraform em Go puro",
+      "source": "https://huncoding.com/cdktf-go-infraestrutura-como-codigo/",
+      "date": "2026-04-19",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/cdktf-go-infraestrutura-como-codigo.md"
+    },
+    {
+      "title": "Go Iterators: Range Over Functions do Jeito Certo",
+      "source": "https://huncoding.com/go-iterators-range-over-functions/",
+      "date": "2026-04-14",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-iterators-range-over-functions.md"
+    },
+    {
+      "title": "LocalStack ficou mais caro do que testar na AWS",
+      "source": "https://huncoding.com/localstack-mais-caro-que-aws/",
+      "date": "2026-04-07",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/localstack-mais-caro-que-aws.md"
+    },
+    {
+      "title": "Distribuindo uma CLI em Go com GoReleaser",
+      "source": "https://huncoding.com/go-cli-goreleaser-distribuindo-cli/",
+      "date": "2026-04-01",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-cli-goreleaser-distribuindo-cli.md"
+    },
+    {
+      "title": "Construindo um servidor MCP em Go do zero",
+      "source": "https://huncoding.com/construindo-servidor-mcp-em-go/",
+      "date": "2026-03-26",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/construindo-servidor-mcp-em-go.md"
+    },
+    {
+      "title": "Go e lambdas: oito anos de discussão na issue #21498",
+      "source": "https://huncoding.com/go-lambdas-short-function-literals-proposta/",
+      "date": "2026-03-23",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-lambdas-short-function-literals-proposta.md"
+    },
+    {
+      "title": "Observabilidade one-liner em Go com o11y, Last9 Agent e TraceKit",
+      "source": "https://huncoding.com/observabilidade-one-liner-go-o11y-last9-tracekit/",
+      "date": "2026-03-17",
+      "author": "Otavio Celestino dos Santos",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/observabilidade-one-liner-go-o11y-last9-tracekit.md"
+    },
+    {
+      "title": "Go e OpenAPI/Swagger: documentando APIs REST do jeito certo",
+      "source": "https://huncoding.com/go-openapi-swagger-documentando-apis-rest/",
+      "date": "2026-03-01",
+      "author": "Otavio Celestino dos Santos",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-openapi-swagger-documentando-apis-rest.md"
+    },
+    {
+      "title": "Go 1.26: Novidades da Linguagem, Green Tea GC e outros",
+      "source": "https://huncoding.com/go-1-26-novidades/",
+      "date": "2026-02-23",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-1-26-novidades.md"
+    },
+    {
+      "title": "Erros em Go: errors.Is, errors.As, Wrapping e Sentinel Errors",
+      "source": "https://huncoding.com/go-erros-errors-is-as-wrapping-sentinel/",
+      "date": "2026-02-17",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-erros-errors-is-as-wrapping-sentinel.md"
+    },
+    {
+      "title": "A Maioria dos Serviços em Go Não Precisa Ser Concorrente",
+      "source": "https://huncoding.com/go-concorrencia-prematura-problemas/",
+      "date": "2026-02-10",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-concorrencia-prematura-problemas.md"
+    },
+    {
+      "title": "Go e gRPC: como criar e usar APIs gRPC do zero",
+      "source": "https://huncoding.com/go-grpc-boas-praticas-producao/",
+      "date": "2026-01-21",
+      "author": "Otavio Celestino dos Santos",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-grpc-boas-praticas-producao.md"
+    },
+    {
+      "title": "Migrando aplicações Go para Kubernetes: problemas reais e soluções",
+      "source": "https://huncoding.com/migrando-go-para-kubernetes/",
+      "date": "2026-01-20",
+      "author": "Otavio Celestino dos Santos",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/migrando-go-para-kubernetes.md"
+    },
+    {
+      "title": "Como Escrever Código Go Idiomático: Princípios e Práticas",
+      "source": "https://huncoding.com/go-idiomatic-code/",
+      "date": "2025-12-09",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-idiomatic-code.md"
+    },
+    {
+      "title": "O Custo Invisível do JSON: Benchmarks Reais com Go e Outros Formatos",
+      "source": "https://huncoding.com/go-serialization-benchmarks/",
+      "date": "2025-12-01",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-serialization-benchmarks.md"
+    },
+    {
+      "title": "Rate Limiting em Go: Fixed Window, Sliding Window, Leaky Bucket e Token Bucket",
+      "source": "https://huncoding.com/go-rate-limiting-algorithms/",
+      "date": "2025-11-25",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/go-rate-limiting-algorithms.md"
+    },
+    {
+      "title": "O que o Terraform realmente executa quando roda seu provider em Go",
+      "source": "https://huncoding.com/terraform-how-it-works/",
+      "date": "2025-11-11",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/terraform-how-it-works.md"
+    },
+    {
+      "title": "Redis-like KV Store: Um Projeto Educacional em Go com Clean Architecture",
+      "source": "https://huncoding.com/redis-like-golang-project/",
+      "date": "2025-11-06",
+      "author": "Otavio Celestino dos Santos",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/redis-like-golang-project.md"
+    },
+    {
+      "title": "Por que o context.Context é o sistema nervoso do Go moderno",
+      "source": "https://huncoding.com/context-nervous-system-go/",
+      "date": "2025-11-03",
+      "author": "otavio_celestino",
+      "language": "pt-BR",
+      "tags": [],
+      "file": "pt/context-nervous-system-go.md"
+    },
+    {
+      "title": "Por que o Go ainda é a melhor linguagem para Platform Engineering em 2025",
+      "source": "https://huncoding.com/go-platform-engineering-2025/",
+      "date": "2025-10-27",
+      "author": "otavio_celestino",
+      "language": "pt-BR",
+      "tags": [],
+      "file": "pt/go-platform-engineering-2025.md"
+    },
+    {
+      "title": "Por que o Cold Start do Go no AWS Lambda Ainda é Subestimado",
+      "source": "https://huncoding.com/lambda-golang-coldstart/",
+      "date": "2025-10-20",
+      "author": "otavio_celestino",
+      "language": "pt-BR",
+      "tags": [],
+      "file": "pt/lambda-golang-coldstart.md"
+    },
+    {
+      "title": "Concorrência vs Paralelismo em Go: Desmistificando Mitos de Performance",
+      "source": "https://huncoding.com/concorrencia-vs-paralelismo-go-mitos-performance/",
+      "date": "2025-10-13",
+      "author": "otavio_celestino",
+      "language": "pt-BR",
+      "tags": [],
+      "file": "pt/concorrencia-vs-paralelismo-go-mitos-performance.md"
+    },
+    {
+      "title": "Por que Engenheiros Sênior Estão Abandonando MVC em Go",
+      "source": "https://huncoding.com/mvc-go-problemas-arquitetura-moderna/",
+      "date": "2025-10-07",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/mvc-go-problemas-arquitetura-moderna.md"
+    },
+    {
+      "title": "Comparação de Performance: Os 5 Principais HTTP Routers do Go",
+      "source": "https://huncoding.com/comparacao-routers-go-performance-benchmark/",
+      "date": "2025-09-30",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/comparacao-routers-go-performance-benchmark.md"
+    },
+    {
+      "title": "Vercel vs Netlify vs Railway: A Guerra dos Deploys",
+      "source": "https://huncoding.com/vercel-vs-netlify-vs-railway-guerra-deploys/",
+      "date": "2025-09-26",
+      "author": "Otavio Celestino dos Santos",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/vercel-vs-netlify-vs-railway-guerra-deploys.md"
+    },
+    {
+      "title": "Observabilidade Distribuída: Kafka + Jaeger + Go para Tracing Resiliente",
+      "source": "https://huncoding.com/sistema-observabilidade-opentelemetry-go/",
+      "date": "2025-09-22",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/sistema-observabilidade-opentelemetry-go.md"
+    },
+    {
+      "title": "Criando um Provider Terraform Customizado do Zero",
+      "source": "https://huncoding.com/provider-terraform-customizado/",
+      "date": "2025-09-14",
+      "author": "Otavio Celestino dos Santos",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/provider-terraform-customizado.md"
+    },
+    {
+      "title": "Do zero a um Operador Kubernetes que observa ConfigMaps",
+      "source": "https://huncoding.com/do-zero-a-um-operator-kubernetes/",
+      "date": "2025-09-11",
+      "author": "otavio_celestino",
+      "language": "pt-br",
+      "tags": [],
+      "file": "pt/do-zero-a-um-operator-kubernetes.md"
+    }
+  ],
+  "failures": []
+}

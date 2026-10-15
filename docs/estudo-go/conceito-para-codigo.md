@@ -2,7 +2,7 @@
 
 ## Um roteiro de investigação
 
-Comece pela pergunta: “o que o Go executa hoje?” Para a FSM, procure `type Machine` e `func Run` em `pkg/fsm/fsm.go`; confirme o comportamento em `pkg/fsm/fsm_test.go`. Para o cache, siga `type Cache`, `shardFor`, `Increment` e `janitor` em `pkg/memcache/memcache.go`, depois compare com `pkg/memcache/memcache_test.go`. Só então leia ADRs para entender motivação: eles descrevem decisões e intenções, não substituem o comportamento compilado.
+Comece pela pergunta: “o que o Go executa hoje?” Para a FSM, procure `type Machine` e `func Run` em `pkg/fsm/fsm.go`; confirme o comportamento em `pkg/fsm/fsm_test.go`. Para o batcher, siga `New`, `Submit`, `loop` e `Close` em `pkg/batch/batch.go`; confirme size, tempo e cancelamento nos testes. Para o cache, siga `type Cache`, `shardFor`, `Increment` e `janitor`. Só então leia ADRs para entender motivação: eles descrevem decisões e intenções, não substituem o comportamento compilado.
 
 É possível navegar nas duas direções:
 
@@ -12,6 +12,8 @@ Comece pela pergunta: “o que o Go executa hoje?” Para a FSM, procure `type M
 | sharding e TTL → `pkg/memcache/memcache.go` | `Handler[Data]` → [Interfaces](03-interfaces/interfaces-na-fsm.md) |
 | `errors.Is` → `pkg/fsm/fsm_test.go` | `ErrNoTransition` → [Erros](04-erros/fsm-erros.md) |
 | `go test -race` → testes do cache | `janitor` → [Concorrência](06-concorrencia/index.md) e [Cache](12-cache/index.md) |
+| batching e backpressure → `pkg/batch/batch.go` | `Batcher[In, Out]` → [Canais de dados e batcher](06-concorrencia/batcher.md) |
+| `sync.WaitGroup` → `pkg/batch/batch.go` | `Flusher` → política de trabalho do batcher |
 
 ## Comandos úteis
 
@@ -21,9 +23,11 @@ No terminal do Dev Container, na raiz do repositório:
 rg --files cmd pkg migrations proto
 rg -n '^(type|func|var|const) ' pkg/fsm
 rg -n '^(type|func|var|const) ' pkg/memcache
+rg -n '^(type|func|var|const) ' pkg/batch
 rg -n '^func (Test|Benchmark|Fuzz)' --glob '*_test.go' .
 go test ./pkg/fsm
 go test -race ./pkg/memcache
+go test -race ./pkg/batch
 ```
 
 O primeiro comando encontra arquivos; o segundo localiza declarações; o terceiro diferencia testes e benchmarks existentes de promessas documentais. Não aparecer um `BenchmarkScore` é evidência de que o número citado no [ADR de inferência](../adr/0004-native-tree-inference-in-go.md) não foi medido neste checkout.

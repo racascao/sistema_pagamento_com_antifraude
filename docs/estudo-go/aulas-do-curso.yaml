@@ -1,0 +1,513 @@
+# Caminhos relativos à raiz do repositório, exceto target_page e
+# related_mkdocs_modules, que são relativos a docs/.
+schema_version: 1
+source_policy:
+  pedagogy: materiais/slides/
+  current_state: código e testes do checkout
+  decisions: docs/adr/
+  normative_behavior: documentação oficial
+  status_scope: cada registro distingue mecanismo existente de integração futura
+lessons:
+  - id: motor-transacional
+    source_file: materiais/slides/00-project-presentation.pdf
+    title: O Motor Transacional
+    course_module: Apresentação / arquitetura do sistema
+    course_lesson: apresentação
+    page_count: 15
+    category: visão do sistema
+    primary_topics: [quatro serviços, autorização, investigação assíncrona]
+    secondary_topics: [gRPC, Kafka, pgvector, observabilidade, GKE]
+    referenced_code: [cmd/gateway/main.go, cmd/ledger/main.go, cmd/fraud/main.go, cmd/investigator/main.go]
+    referenced_adrs: ['0001', '0002', '0003', '0004', '0006', '0010']
+    project_components: [gateway, ledger, fraud, investigator]
+    implementation_status: MIXED
+    implementation_details: "Packages genéricos, contratos e infraestrutura parcial existem; o fluxo transacional entre os quatro serviços é arquitetura-alvo."
+    related_mkdocs_modules: [visao-do-projeto.md, architecture.md]
+    related_articles: [golang-avancado-curso-udemy]
+    official_verification_required: true
+    benchmark_claims: {present: true, reproducible_now: false}
+    target_page: aulas-do-curso/00-visao/motor-transacional.md
+    notes: "O diagrama usa HNSW, enquanto o ADR 0002 decide ivfflat. Números de inferência não são evidência do checkout."
+
+  - id: adrs-decisoes-registradas
+    source_file: materiais/slides/01-adrs.pdf
+    title: "ADRs: as Decisões Registradas"
+    course_module: 02 — Arquitetura
+    course_lesson: '01'
+    page_count: 15
+    category: arquitetura
+    primary_topics: [decisões arquiteturais, alternativas, consequências]
+    secondary_topics: [monorepo, Postgres, gRPC, outbox, GCP]
+    referenced_code: [docs/adr/]
+    referenced_adrs: ['0001', '0002', '0003', '0004', '0005', '0006', '0007', '0008', '0009', '0010', '0011']
+    project_components: [arquitetura]
+    implementation_status: MIXED
+    implementation_details: "ADRs existem e são decisões; a implementação de várias capacidades ainda não convergiu."
+    related_mkdocs_modules: [architecture.md, estudo-go/padroes-no-projeto.md]
+    related_articles: []
+    official_verification_required: false
+    benchmark_claims: {present: true, reproducible_now: false}
+    target_page: aulas-do-curso/02-arquitetura/adrs.md
+    notes: "A aula apresenta ivfflat no ADR 0002; a migração atual usa HNSW. O ADR prevalece como decisão."
+
+  - id: camada-platform
+    source_file: materiais/slides/01-teoria-platform.pdf
+    title: "Teoria: a camada platform/"
+    course_module: 09 — Platform
+    course_lesson: '01'
+    page_count: 5
+    category: arquitetura
+    primary_topics: [componentes compartilhados, infraestrutura transversal]
+    secondary_topics: [Kafka, Postgres, telemetria]
+    referenced_code: [internal/platform/]
+    referenced_adrs: ['0001', '0006']
+    project_components: [platform]
+    implementation_status: TARGET_ARCHITECTURE
+    implementation_details: "A camada internal/platform/ descrita no deck ainda não existe no checkout."
+    related_mkdocs_modules: [architecture.md, estudo-go/14-kafka/index.md]
+    related_articles: []
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/09-platform/camada-platform.md
+    notes: "Compartilhamento de infraestrutura não transforma pkg/ em código de domínio."
+
+  - id: double-entry-idempotencia
+    source_file: materiais/slides/01-teoria.pdf
+    title: Double-Entry e Idempotência
+    course_module: 11 — Ledger
+    course_lesson: '01'
+    page_count: 10
+    category: domínio e consistência
+    primary_topics: [double-entry, lançamentos imutáveis, idempotência]
+    secondary_topics: [soma zero, timeout, hash da intenção, transação]
+    referenced_code: [migrations/00002_create_payments_and_entries.sql, migrations/00003_create_idempotency_keys.sql, internal/ledger/domain/payment.go, internal/ledger/usecase/authorize.go]
+    referenced_adrs: ['0002', '0006']
+    project_components: [ledger, Postgres]
+    implementation_status: PARTIAL
+    implementation_details: "Migrações de ledger e chaves idempotentes existem; domínio, hashCharge e caso de uso Authorize ainda não."
+    related_mkdocs_modules: [estudo-go/13-postgres-outbox/index.md, architecture.md]
+    related_articles: [golang-avancado-curso-udemy]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/11-ledger/double-entry-idempotencia.md
+    notes: "O trigger atual verifica saldo zero após INSERT, mas não prova exatamente dois lançamentos nem imutabilidade por si só."
+
+  - id: monorepo-quatro-servicos
+    source_file: materiais/slides/02-monorepo.pdf
+    title: Um Repositório, Quatro Serviços
+    course_module: 02 — Arquitetura
+    course_lesson: '02'
+    page_count: 8
+    category: arquitetura
+    primary_topics: [monorepo, serviços independentes, Clean Architecture]
+    secondary_topics: [cmd, internal, pkg, contratos]
+    referenced_code: [cmd/gateway/main.go, cmd/ledger/main.go, cmd/fraud/main.go, cmd/investigator/main.go]
+    referenced_adrs: ['0001']
+    project_components: [gateway, ledger, fraud, investigator]
+    implementation_status: PARTIAL
+    implementation_details: "Estrutura de quatro binários existe, mas os entrypoints são stubs e não executam os fluxos descritos."
+    related_mkdocs_modules: [architecture.md, estudo-go/mapa-do-projeto.md]
+    related_articles: [mvc-go-problemas-arquitetura-moderna]
+    official_verification_required: false
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/02-arquitetura/monorepo-quatro-servicos.md
+    notes: "Nomes de packages e imports dos slides devem ser conferidos contra o módulo atual racascao."
+
+  - id: protocol-buffers
+    source_file: materiais/slides/04-protocol-buffers.pdf
+    title: Protocol Buffers
+    course_module: 02 — Arquitetura
+    course_lesson: '03'
+    page_count: 9
+    category: contratos
+    primary_topics: [schema proto, compatibilidade, geração de código]
+    secondary_topics: [mensagens, campos, serviços gRPC]
+    referenced_code: [proto/]
+    referenced_adrs: ['0003']
+    project_components: [contratos gRPC]
+    implementation_status: PARTIAL
+    implementation_details: "Fontes .proto e dependências existem; clientes e servidores de produção não."
+    related_mkdocs_modules: [estudo-go/09-protobuf-grpc/index.md]
+    related_articles: [go-grpc-boas-praticas-producao]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/02-arquitetura/protocol-buffers.md
+    notes: "Código gerado mostrado na apresentação não comprova artefato gerado no checkout."
+
+  - id: grpc-core-http2
+    source_file: materiais/slides/05-grpc-http2.pdf
+    title: gRPC Core e HTTP/2
+    course_module: 01 — O Alicerce
+    course_lesson: '05'
+    page_count: 5
+    category: transporte
+    primary_topics: [gRPC, HTTP/2, streaming]
+    secondary_topics: [multiplexação, deadline, contratos]
+    referenced_code: [proto/, cmd/gateway/main.go]
+    referenced_adrs: ['0003']
+    project_components: [gateway, ledger, fraud]
+    implementation_status: PARTIAL
+    implementation_details: "Contratos fonte existem, mas não há servidor nem cliente gRPC integrado."
+    related_mkdocs_modules: [estudo-go/09-protobuf-grpc/index.md]
+    related_articles: [go-grpc-boas-praticas-producao]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/02-arquitetura/grpc-http2.md
+    notes: "A presença de uma dependência gRPC no módulo não constitui serviço funcional."
+
+  - id: modo-degradado
+    source_file: materiais/slides/06-degraded-mode.pdf
+    title: Modo Degradado
+    course_module: 11 — Ledger
+    course_lesson: 06 — slide de apoio
+    page_count: 6
+    category: resiliência
+    primary_topics: [timeout, revisão manual, disponibilidade]
+    secondary_topics: [fraud, fallback, sinalização de degradação]
+    referenced_code: [internal/ledger/usecase/authorize.go]
+    referenced_adrs: ['0005']
+    project_components: [ledger, fraud]
+    implementation_status: TARGET_ARCHITECTURE
+    implementation_details: "Authorize e integração remota com fraud não existem; apenas o mecanismo genérico de fallback existe em pkg/fsm."
+    related_mkdocs_modules: [estudo-go/07-context/index.md, estudo-go/11-fsm/index.md]
+    related_articles: [context-nervous-system-go]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/11-ledger/modo-degradado.md
+    notes: "Falha do modelo e falha de chamada entre serviços são fronteiras diferentes."
+
+  - id: maquina-estados-finita
+    source_file: materiais/slides/06-fsm.pdf
+    title: Máquina de Estados Finita
+    course_module: 03 — pkg/fsm
+    course_lesson: 01 — teoria
+    page_count: 13
+    category: mecanismo genérico
+    primary_topics: [estados, handlers, transições, fallback]
+    secondary_topics: [trace, limite de hops, observabilidade]
+    referenced_code: [pkg/fsm/fsm.go, pkg/fsm/fsm_test.go, internal/fraud/usecase/pipeline.go]
+    referenced_adrs: ['0005']
+    project_components: [pkg/fsm, fraud]
+    implementation_status: MIXED
+    implementation_details: "Máquina genérica e testes existem; pipeline antifraude nomeado nos slides não existe."
+    related_mkdocs_modules: [estudo-go/11-fsm/index.md, estudo-go/05-generics/index.md, estudo-go/04-erros/fsm-erros.md]
+    related_articles: [go-erros-errors-is-as-wrapping-sentinel]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/03-fsm/maquina-estados-finita.md
+    notes: "Trace registra o próximo estado retornado pelo handler; em fallback, esse campo não é reescrito para o destino de escape."
+
+  - id: kafka-platform
+    source_file: materiais/slides/07-kafka.pdf
+    title: "kafka.go: Writer, Reader e EnsureTopics"
+    course_module: 09 — Platform
+    course_lesson: '07'
+    page_count: 7
+    category: mensageria
+    primary_topics: [Kafka, produtores, consumidores]
+    secondary_topics: [tópicos, partições, operação]
+    referenced_code: [internal/platform/kafka/kafka.go]
+    referenced_adrs: ['0006', '0009']
+    project_components: [Kafka, platform]
+    implementation_status: PARTIAL
+    implementation_details: "Redpanda e configuração de broker existem; helper Go Writer/Reader/EnsureTopics ainda não."
+    related_mkdocs_modules: [estudo-go/14-kafka/index.md, architecture.md]
+    related_articles: []
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/09-platform/kafka.md
+    notes: "A disponibilidade de um broker não comprova publicação pelo ledger."
+
+  - id: ml-in-process
+    source_file: materiais/slides/08-ml-in-process.pdf
+    title: Inferência de ML In-Process
+    course_module: 06 — Fraud Domain
+    course_lesson: '06'
+    page_count: 8
+    category: inferência
+    primary_topics: [árvore de decisão, scoring nativo, hot path]
+    secondary_topics: [modelo serializado, alocações, benchmark]
+    referenced_code: [internal/fraud/domain/tree.go]
+    referenced_adrs: ['0004']
+    project_components: [fraud]
+    implementation_status: TARGET_ARCHITECTURE
+    implementation_details: "Scorer, modelo e BenchmarkScore não existem no checkout."
+    related_mkdocs_modules: [estudo-go/17-performance/index.md, architecture.md]
+    related_articles: [golang-avancado-curso-udemy]
+    official_verification_required: true
+    benchmark_claims: {present: true, reproducible_now: false}
+    target_page: aulas-do-curso/06-fraud-domain/ml-in-process.md
+    notes: "~8 ns e zero alocações não são reproduzíveis neste checkout."
+
+  - id: sigmoid-sem-math
+    source_file: materiais/slides/09-taylor-sigmoid.pdf
+    title: Sigmoid sem o Pacote math
+    course_module: 06 — Fraud Domain
+    course_lesson: 09 — por referência cruzada
+    page_count: 7
+    category: inferência
+    primary_topics: [sigmoid, aproximação de Taylor, estabilidade numérica]
+    secondary_topics: [normalização, hot path, precisão]
+    referenced_code: [internal/fraud/domain/tree.go]
+    referenced_adrs: ['0004']
+    project_components: [fraud]
+    implementation_status: TARGET_ARCHITECTURE
+    implementation_details: "Função sigmoid e árvore de scoring apresentadas no slide não estão implementadas."
+    related_mkdocs_modules: [estudo-go/17-performance/index.md]
+    related_articles: []
+    official_verification_required: true
+    benchmark_claims: {present: true, reproducible_now: false}
+    target_page: aulas-do-curso/06-fraud-domain/sigmoid-sem-math.md
+    notes: "Aproximação exige medir erro numérico e custo na carga real; não assumir ganho."
+
+  - id: cache-shardado-ttl
+    source_file: materiais/slides/10-sharded-cache.pdf
+    title: Cache Shardado com TTL
+    course_module: 04 — pkg/memcache
+    course_lesson: 01 — teoria
+    page_count: 9
+    category: mecanismo genérico
+    primary_topics: [sharding, TTL, locks]
+    secondary_topics: [janitor, incremento atômico, cache local]
+    referenced_code: [pkg/memcache/memcache.go, pkg/memcache/memcache_test.go]
+    referenced_adrs: ['0008']
+    project_components: [pkg/memcache, fraud]
+    implementation_status: MIXED
+    implementation_details: "Cache e testes existem; velocity e cache semântico no pipeline de fraud ainda não."
+    related_mkdocs_modules: [estudo-go/12-cache/index.md, estudo-go/06-concorrencia/index.md]
+    related_articles: [redis-like-golang-project]
+    official_verification_required: true
+    benchmark_claims: {present: true, reproducible_now: false}
+    target_page: aulas-do-curso/04-cache/cache-shardado-ttl.md
+    notes: "Comparações com round-trip Redis no slide não são benchmark deste checkout."
+
+  - id: dynamic-batching
+    source_file: materiais/slides/11-dynamic-batching.pdf
+    title: Dynamic Batching
+    course_module: 05 — pkg/batch
+    course_lesson: 01 — teoria
+    page_count: 8
+    category: mecanismo genérico
+    primary_topics: [micro-batching, janela de tempo, tamanho máximo]
+    secondary_topics: [channels, timer, cancelamento, lifecycle]
+    referenced_code: [pkg/batch/batch.go, pkg/batch/batch_test.go, internal/fraud/usecase/pipeline.go]
+    referenced_adrs: ['0004']
+    project_components: [pkg/batch, fraud]
+    implementation_status: MIXED
+    implementation_details: "Batcher genérico e testes existem; scorer, Flusher de fraude e integração no pipeline não."
+    related_mkdocs_modules: [estudo-go/06-concorrencia/batcher.md, estudo-go/07-context/index.md, estudo-go/17-performance/index.md]
+    related_articles: [go-concorrencia-prematura-problemas, context-nervous-system-go]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/05-batching/dynamic-batching.md
+    notes: "O dispatch atual usa context.Background() e um único loop síncrono; não há processamento sobreposto de janelas."
+
+  - id: rate-limiting-borda
+    source_file: materiais/slides/13-rate-limiting.pdf
+    title: Rate Limiting na Borda
+    course_module: 12 — Gateway
+    course_lesson: '02'
+    page_count: 5
+    category: borda HTTP
+    primary_topics: [fixed window, abuso, isolamento por cliente]
+    secondary_topics: [limpeza, burst de fronteira, alternativas]
+    referenced_code: [internal/gateway/adapter/ratelimit.go]
+    referenced_adrs: ['0003']
+    project_components: [gateway]
+    implementation_status: TARGET_ARCHITECTURE
+    implementation_details: "Limiter e servidor HTTP ainda não existem."
+    related_mkdocs_modules: [estudo-go/10-http-sse/index.md]
+    related_articles: [go-rate-limiting-algorithms]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/12-gateway/rate-limiting.md
+    notes: "Janela fixa pode permitir rajada na fronteira entre duas janelas."
+
+  - id: sse-eventhub
+    source_file: materiais/slides/14-sse-streaming.pdf
+    title: Streaming com SSE e o EventHub
+    course_module: 12 — Gateway
+    course_lesson: '03'
+    page_count: 6
+    category: borda HTTP
+    primary_topics: [SSE, EventHub, fan-out]
+    secondary_topics: [Kafka, slow consumer, reconnect, ausência de replay]
+    referenced_code: [internal/gateway/infra/eventhub.go, internal/gateway/adapter/http.go]
+    referenced_adrs: ['0003', '0009']
+    project_components: [gateway, Kafka, console]
+    implementation_status: TARGET_ARCHITECTURE
+    implementation_details: "EventHub e handlers SSE não existem; apenas contratos, ADRs e infraestrutura de apoio."
+    related_mkdocs_modules: [estudo-go/10-http-sse/index.md, estudo-go/06-concorrencia/index.md, estudo-go/14-kafka/index.md]
+    related_articles: [golang-avancado-curso-udemy]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/12-gateway/sse-eventhub.md
+    notes: "Reconexão de EventSource não implica replay; por réplica, o hub precisa consumir tópicos que alimentam seus próprios assinantes."
+
+  - id: generics-em-go
+    source_file: materiais/slides/18-generics-em-go.pdf
+    title: Generics em Go
+    course_module: 01 — Go na Prática
+    course_lesson: '01'
+    page_count: 9
+    category: linguagem Go
+    primary_topics: [type parameters, constraints, type safety]
+    secondary_topics: [any, comparable, type sets, inferência]
+    referenced_code: [pkg/fsm/fsm.go, pkg/memcache/memcache.go, pkg/batch/batch.go, internal/fraud/usecase/pipeline.go]
+    referenced_adrs: []
+    project_components: [pkg/fsm, pkg/memcache, pkg/batch]
+    implementation_status: MIXED
+    implementation_details: "Três mecanismos genéricos existem; os exemplos de montagem do pipeline de fraude não."
+    related_mkdocs_modules: [estudo-go/05-generics/index.md, estudo-go/05-generics/machine-generica.md]
+    related_articles: [go-idiomatic-code]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/01-go-na-pratica/generics-em-go.md
+    notes: "O exemplo golang.org/x/exp/constraints é histórico; não é dependência recomendada para esta aula."
+
+  - id: docker-compose-gke
+    source_file: materiais/slides/23-arquitetura-cloud.pdf
+    title: Do Docker Compose ao GKE
+    course_module: "Cloud Target: GCP"
+    course_lesson: visão de deploy
+    page_count: 7
+    category: deploy
+    primary_topics: [GKE, node pools, serviços gerenciados]
+    secondary_topics: [Terraform, Kustomize, rede privada, rollout]
+    referenced_code: [docker-compose.yml, deploy/]
+    referenced_adrs: ['0010']
+    project_components: [GCP, gateway, ledger, fraud, investigator]
+    implementation_status: PARTIAL
+    implementation_details: "Manifests e Terraform existem; deploy operacional dos quatro serviços não foi demonstrado."
+    related_mkdocs_modules: [architecture.md, runbook.md]
+    related_articles: [migrando-go-para-kubernetes]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/arquitetura-producao/docker-compose-gke.md
+    notes: "Desenho de node pools e serviços gerenciados representa o destino de produção."
+
+  - id: tradeoffs-arquiteturais
+    source_file: materiais/slides/24-tradeoffs-arquiteturais.pdf
+    title: Nenhuma Escolha é de Graça
+    course_module: Síntese dos ADRs
+    course_lesson: síntese
+    page_count: 6
+    category: síntese arquitetural
+    primary_topics: [trade-offs, decisões, custos operacionais]
+    secondary_topics: [monorepo, gRPC, inferência, outbox, cache, GCP]
+    referenced_code: [docs/adr/]
+    referenced_adrs: ['0001', '0003', '0004', '0005', '0006', '0008', '0010']
+    project_components: [arquitetura]
+    implementation_status: MIXED
+    implementation_details: "ADRs são decisões vigentes, mas boa parte dos mecanismos de serviço está planejada."
+    related_mkdocs_modules: [architecture.md, estudo-go/padroes-no-projeto.md]
+    related_articles: []
+    official_verification_required: false
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/arquitetura-producao/tradeoffs-arquiteturais.md
+    notes: "Avaliar cada escolha contra o modo de falha protegido, não como receita universal."
+
+  - id: context-context
+    source_file: materiais/slides/context-context.pdf
+    title: context.Context
+    course_module: 01 — Go na Prática
+    course_lesson: '05'
+    page_count: 9
+    category: linguagem Go
+    primary_topics: [cancelamento, deadline, propagação]
+    secondary_topics: [WithTimeout, Done, Err, Value]
+    referenced_code: [pkg/fsm/fsm.go, pkg/batch/batch.go, internal/ledger/usecase/authorize.go]
+    referenced_adrs: ['0005']
+    project_components: [pkg/fsm, pkg/batch, ledger]
+    implementation_status: MIXED
+    implementation_details: "Cancelamento em FSM e Submit existe; propagação entre serviços no ledger é futura."
+    related_mkdocs_modules: [estudo-go/07-context/index.md]
+    related_articles: [context-nervous-system-go]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/01-go-na-pratica/context-context.md
+    notes: "O Flusher atual recebe context.Background(), não o contexto de um Submit individual."
+
+  - id: erros-em-go
+    source_file: materiais/slides/erros-em-go.pdf
+    title: Erros em Go
+    course_module: 01 — Go na Prática
+    course_lesson: '06'
+    page_count: 9
+    category: linguagem Go
+    primary_topics: [errors.Is, sentinels, wrapping]
+    secondary_topics: [errors.As, fronteiras, códigos de transporte]
+    referenced_code: [pkg/fsm/fsm.go, pkg/batch/batch.go, internal/ledger/usecase/authorize.go]
+    referenced_adrs: []
+    project_components: [pkg/fsm, pkg/batch, ledger]
+    implementation_status: MIXED
+    implementation_details: "Erros em packages genéricos existem; mapeamento gRPC/HTTP do ledger é futuro."
+    related_mkdocs_modules: [estudo-go/04-erros/index.md, estudo-go/04-erros/cadeia-de-erros.md]
+    related_articles: [go-erros-errors-is-as-wrapping-sentinel]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/01-go-na-pratica/erros-em-go.md
+    notes: "Com wrapping, preferir errors.Is a igualdade direta."
+
+  - id: goroutines-channels-select
+    source_file: materiais/slides/goroutines-channels-select.pdf
+    title: Goroutines, Channels e Select
+    course_module: 01 — Go na Prática
+    course_lesson: '03'
+    page_count: 9
+    category: linguagem Go
+    primary_topics: [goroutines, channels, select]
+    secondary_topics: [default, encerramento, cancelamento]
+    referenced_code: [pkg/batch/batch.go, pkg/memcache/memcache.go, internal/gateway/infra/eventhub.go]
+    referenced_adrs: ['0009']
+    project_components: [pkg/batch, pkg/memcache, gateway]
+    implementation_status: MIXED
+    implementation_details: "Batcher e janitor usam goroutines/channels; EventHub ainda é alvo."
+    related_mkdocs_modules: [estudo-go/06-concorrencia/index.md, estudo-go/06-concorrencia/batcher.md]
+    related_articles: [concorrencia-vs-paralelismo-go-mitos-performance]
+    official_verification_required: true
+    benchmark_claims: {present: true, reproducible_now: false}
+    target_page: aulas-do-curso/01-go-na-pratica/goroutines-channels-select.md
+    notes: "Concorrência não implica paralelismo; channels não são a única forma segura de sincronizar."
+
+  - id: interfaces-como-portas
+    source_file: materiais/slides/interfaces-como-portas.pdf
+    title: Interfaces como Portas
+    course_module: 01 — Go na Prática
+    course_lesson: '02'
+    page_count: 9
+    category: linguagem e arquitetura
+    primary_topics: [interfaces, portas, satisfação estrutural]
+    secondary_topics: [method set, dependency inversion, nil tipado]
+    referenced_code: [internal/ledger/usecase/authorize.go, internal/ledger/infra/fraud_client.go]
+    referenced_adrs: ['0001']
+    project_components: [ledger, fraud]
+    implementation_status: TARGET_ARCHITECTURE
+    implementation_details: "As portas e adaptadores específicos do ledger mostrados nos slides ainda não existem."
+    related_mkdocs_modules: [estudo-go/03-interfaces/index.md, estudo-go/03-interfaces/interfaces-na-fsm.md]
+    related_articles: [mvc-go-problemas-arquitetura-moderna]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/01-go-na-pratica/interfaces-como-portas.md
+    notes: "O slide usa código de serviço futuro para ilustrar uma regra de linguagem já vigente."
+
+  - id: sync-rwmutex-waitgroup-once
+    source_file: materiais/slides/sync-rwmutex-waitgroup-once.pdf
+    title: sync.RWMutex, WaitGroup, Once
+    course_module: 01 — Go na Prática
+    course_lesson: '04'
+    page_count: 9
+    category: linguagem Go
+    primary_topics: [RWMutex, WaitGroup, Once]
+    secondary_topics: [sharding, lifecycle, subscriber cleanup]
+    referenced_code: [pkg/memcache/memcache.go, pkg/batch/batch.go, internal/gateway/infra/eventhub.go]
+    referenced_adrs: ['0008', '0009']
+    project_components: [pkg/memcache, pkg/batch, gateway]
+    implementation_status: MIXED
+    implementation_details: "RWMutex, WaitGroup e Once aparecem nos packages genéricos; aplicação no EventHub é futura."
+    related_mkdocs_modules: [estudo-go/06-concorrencia/index.md, estudo-go/12-cache/index.md]
+    related_articles: [go-concorrencia-prematura-problemas]
+    official_verification_required: true
+    benchmark_claims: {present: false, reproducible_now: false}
+    target_page: aulas-do-curso/01-go-na-pratica/sync-rwmutex-waitgroup-once.md
+    notes: "A escolha entre Mutex e RWMutex depende de medição sob carga."

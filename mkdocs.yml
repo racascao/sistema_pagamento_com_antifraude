@@ -21,6 +21,9 @@ markdown_extensions:
   - pymdownx.superfences
   - toc:
       permalink: true
+# Artigos publicados por links da página de referências, sem entradas individuais no menu.
+not_in_nav: |
+  /artigos-completos/pt/
 nav:
   - Início: index.md
   - Curso de Go:
@@ -28,7 +31,16 @@ nav:
       - Como estudar: estudo-go/como-estudar.md
       - Mapa do projeto: estudo-go/mapa-do-projeto.md
       - Do conceito ao código: estudo-go/conceito-para-codigo.md
+      - Padrões no projeto: estudo-go/padroes-no-projeto.md
+      - Referências do professor: estudo-go/referencias-do-professor.md
       - Roadmap: estudo-go/roadmap.md
+  - Aulas do curso:
+      - Visão geral: aulas-do-curso/index.md
+      - Generics em Go: aulas-do-curso/01-go-na-pratica/generics-em-go.md
+      - Máquina de Estados Finita: aulas-do-curso/03-fsm/maquina-estados-finita.md
+      - Dynamic Batching: aulas-do-curso/05-batching/dynamic-batching.md
+      - Double-Entry e Idempotência: aulas-do-curso/11-ledger/double-entry-idempotencia.md
+      - Streaming com SSE e o EventHub: aulas-do-curso/12-gateway/sse-eventhub.md
   - 1. Fundamentos:
       - Visão geral: estudo-go/01-fundamentos/index.md
       - Tipos, funções e estado: estudo-go/01-fundamentos/tipos-funcoes-estado.md
@@ -49,7 +61,9 @@ nav:
       - Visão geral: estudo-go/08-testes/index.md
       - Testando a FSM: estudo-go/08-testes/testando-fsm.md
   - 7. FSM: estudo-go/11-fsm/index.md
-  - 8. Concorrência: estudo-go/06-concorrencia/index.md
+  - 8. Concorrência:
+      - Visão geral: estudo-go/06-concorrencia/index.md
+      - Canais de dados e batcher: estudo-go/06-concorrencia/batcher.md
   - 9. Context: estudo-go/07-context/index.md
   - 10. Cache, sharding e TTL: estudo-go/12-cache/index.md
   - 11. Protobuf e gRPC: estudo-go/09-protobuf-grpc/index.md
@@ -61,6 +75,7 @@ nav:
   - 17. Performance: estudo-go/17-performance/index.md
   - 18. Go moderno: estudo-go/18-go-moderno/index.md
   - Projeto:
+      - Visão do projeto: visao-do-projeto.md
       - Arquitetura: architecture.md
       - Runbook: runbook.md
       - ADRs:

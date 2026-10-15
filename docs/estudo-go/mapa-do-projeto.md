@@ -7,7 +7,8 @@ Este mapa foi conferido no código atual. A [Arquitetura](../architecture.md) de
 | `cmd/gateway`, `cmd/ledger`, `cmd/fraud`, `cmd/investigator` | Cada `main` imprime uma mensagem e termina; não há servidores | `cmd/*/main.go` | [Fundamentos](01-fundamentos/index.md) |
 | `pkg/fsm` | Motor genérico com handlers, limite de hops, trace e fallback; testes black-box | `pkg/fsm/fsm.go`, `fsm_test.go` | [Interfaces](03-interfaces/interfaces-na-fsm.md), [Generics](05-generics/machine-generica.md), [Erros](04-erros/fsm-erros.md), [Testes](08-testes/testando-fsm.md), [FSM](11-fsm/index.md) |
 | `pkg/memcache` | Cache genérico com 16 shards, hash FNV, `RWMutex`, TTL, janitor, `Close`, leitura, escrita e incremento; testes black-box incluindo concorrência | `pkg/memcache/memcache.go`, `memcache_test.go` | [Concorrência](06-concorrencia/index.md), [Cache](12-cache/index.md), [Generics](05-generics/index.md) |
-| `pkg/batch`, `pkg/mcp` | Apenas declaração de package | `pkg/batch/batch.go`, `pkg/mcp/mcp.go` | [Concorrência](06-concorrencia/index.md), [MCP](16-mcp/index.md) |
+| `pkg/batch` | Batcher genérico com fila limitada, size-or-time flush, cancelamento local, `WaitGroup` e shutdown que drena a fila; sem consumidor de produção | `pkg/batch/batch.go`, `batch_test.go` | [Concorrência](06-concorrencia/index.md), [Batcher](06-concorrencia/batcher.md), [Performance](17-performance/index.md) |
+| `pkg/mcp` | Apenas declaração de package | `pkg/mcp/mcp.go` | [MCP](16-mcp/index.md) |
 | Contratos | `FraudService` e `LedgerService` declarados sem RPCs | `proto/fraud/v1/fraud.proto`, `proto/ledger/v1/ledger.proto` | [Protobuf e gRPC](09-protobuf-grpc/index.md) |
 | Banco | Sete migrações SQL e `embed.FS`; não há repositório Go nem relay | `migrations/` | [Postgres e Outbox](13-postgres-outbox/index.md) |
 | Infraestrutura | Compose, imagens, monitoramento e manifests versionados; isso não implica endpoints ativos | `docker-compose.yml`, `deploy/` | [Observabilidade](15-observabilidade/index.md) |
@@ -22,6 +23,7 @@ Os documentos projetam `gateway → ledger → fraud`, investigação assíncron
 - [ADR 0002](../adr/0002-postgres-as-the-single-database.md) fala em índice `ivfflat`, mas a migração atual cria `hnsw` em `fraud_patterns.embedding`.
 - [Arquitetura](../architecture.md) atribui métricas, scoring, gRPC e SSE aos serviços; seus `main.go` atuais ainda não os iniciam.
 - [ADR 0005](../adr/0005-fsm-with-deterministic-fallback.md) descreve estados do pipeline de fraude; `pkg/fsm` é apenas o motor compartilhado, sem pipeline `fraud` configurado.
+- A [Arquitetura](../architecture.md) posiciona batching diante do scorer, mas nenhum serviço importa `pkg/batch` neste checkout.
 
 Use [Do conceito ao código](conceito-para-codigo.md) para confirmar o estado de qualquer outra afirmação.
 
@@ -33,4 +35,7 @@ pkg/fsm/fsm.go
 
 pkg/memcache/memcache.go
   → structs, maps, métodos, RWMutex, sharding, TTL e concorrência
+
+pkg/batch/batch.go
+  → generics, channels de dados, select, timer, WaitGroup e batching
 ```

@@ -1,10 +1,10 @@
 # Generics
 
-**Estado:** capítulo completo com a FSM como laboratório. O cache é uma segunda instância funcional de mecanismo genérico. Veja o [roadmap](../roadmap.md).
+**Estado:** capítulo completo com a FSM como laboratório. Cache e batcher são outras instâncias funcionais de mecanismos genéricos. Veja o [roadmap](../roadmap.md).
 
 ## Onde isso aparece no projeto
 
-`Machine[T]`, `Handler[T]` e `Cache[V]` são mecanismos independentes de pagamentos. `pkg/batch` ainda só declara o package. Leia [Lendo a máquina genérica](machine-generica.md) para acompanhar a instanciação real em `fsm_test.go` e decidir quando um type parameter agrega valor.
+`Machine[T]`, `Handler[T]`, `Cache[V]` e `Batcher[In, Out]` são mecanismos independentes de pagamentos. Leia [Lendo a máquina genérica](machine-generica.md) para acompanhar a instanciação real em `fsm_test.go` e decidir quando um type parameter agrega valor.
 
 Fontes: `pkg/fsm/fsm.go`, `pkg/memcache/memcache.go`, `pkg/batch/batch.go`.
 

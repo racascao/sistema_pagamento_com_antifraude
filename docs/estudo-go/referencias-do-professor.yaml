@@ -1,0 +1,607 @@
+# Caminhos relativos a docs/. IDs derivados dos nomes dos arquivos.
+schema_version: 1
+author: Otavio Celestino dos Santos (HunCoding)
+applicability: {A: componente implementado, B: arquitetura-alvo, C: leitura complementar}
+source_policy:
+  implemented_state: codigo e testes
+  development_rules: AGENTS.md
+  direction: docs/visao-do-projeto.md
+  architecture: docs/architecture.md
+  decisions: docs/adr/
+  normative_go: documentacao oficial do Go
+  pedagogy: artigos do professor
+  course_progress: docs/estudo-go/roadmap.md
+  do_not_use_articles_for: [provar implementacao, substituir testes, substituir ADRs, estabelecer API normativa, universalizar benchmarks, adotar arquitetura sem decisao]
+articles:
+  - id: cdktf-go-infraestrutura-como-codigo
+    file: artigos-completos/pt/cdktf-go-infraestrutura-como-codigo.md
+    title: "CDKTF em Go: escreva sua infraestrutura Terraform em Go puro"
+    source_url: https://huncoding.com/cdktf-go-infraestrutura-como-codigo/
+    published: '2026-04-19'
+    article_type: infrastructure
+    applicability: C
+    primary_module: Infraestrutura / Cloud
+    related_modules: [Deploy / Kubernetes, Projeto / arquitetura]
+    primary_topics: [CDKTF, Terraform, infraestrutura como codigo]
+    secondary_topics: [constructs Go, stacks, testes de sintese]
+    project_relation: complementary
+    project_components: []
+    use_for: alternativas de IaC em Go
+    notes: Nao implica adocao de CDKTF; o exemplo usa AWS, enquanto o alvo do projeto e GCP.
+    verification: {official_check_required: true}
+  - id: comparacao-routers-go-performance-benchmark
+    file: artigos-completos/pt/comparacao-routers-go-performance-benchmark.md
+    title: "Comparação de Performance: Os 5 Principais HTTP Routers do Go"
+    source_url: https://huncoding.com/comparacao-routers-go-performance-benchmark/
+    published: '2025-09-30'
+    article_type: benchmark/comparison
+    applicability: B
+    primary_module: 12. HTTP e SSE
+    related_modules: [17. Performance, Ecossistema Go]
+    primary_topics: [roteadores HTTP, benchmark]
+    secondary_topics: [middlewares, rotas parametrizadas, JSON]
+    project_relation: target_architecture
+    project_components: [gateway]
+    use_for: metodologia e criterios de escolha de roteador
+    notes: Resultados dependem de versao, hardware, carga e middleware.
+    verification: {benchmark_context_required: true, freshness_check_required: true, official_check_required: true}
+  - id: concorrencia-vs-paralelismo-go-mitos-performance
+    file: artigos-completos/pt/concorrencia-vs-paralelismo-go-mitos-performance.md
+    title: "Concorrência vs Paralelismo em Go: Desmistificando Mitos de Performance"
+    source_url: https://huncoding.com/concorrencia-vs-paralelismo-go-mitos-performance/
+    published: '2025-10-13'
+    article_type: deep-dive
+    applicability: A
+    primary_module: 8. Concorrência
+    related_modules: [17. Performance]
+    primary_topics: [goroutines, scheduler, concorrencia versus paralelismo]
+    secondary_topics: [merge sort paralelo, custo de coordenacao]
+    project_relation: implemented_component
+    project_components: [pkg/batch/batch.go, pkg/memcache/memcache.go]
+    use_for: explicar limites de throughput e paralelismo nos mecanismos concorrentes
+    notes: O merge sort e exemplo externo; nao prova ganho do batcher ou cache.
+    verification: {benchmark_context_required: true, official_check_required: true}
+  - id: construindo-servidor-mcp-em-go
+    file: artigos-completos/pt/construindo-servidor-mcp-em-go.md
+    title: Construindo um servidor MCP em Go do zero
+    source_url: https://huncoding.com/construindo-servidor-mcp-em-go/
+    published: '2026-03-26'
+    article_type: tutorial
+    applicability: B
+    primary_module: 16. MCP
+    related_modules: [IA, Projeto / arquitetura]
+    primary_topics: [MCP, servidor de ferramentas]
+    secondary_topics: [stdio, autenticacao, SDK]
+    project_relation: target_architecture
+    project_components: [investigator]
+    use_for: conceitos e contratos de ferramentas MCP
+    notes: O artigo usa SDK externo; o ADR do projeto preve implementacao direta. Confirmar versao do protocolo.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: context-nervous-system-go
+    file: artigos-completos/pt/context-nervous-system-go.md
+    title: Por que o context.Context é o sistema nervoso do Go moderno
+    source_url: https://huncoding.com/context-nervous-system-go/
+    published: '2025-11-03'
+    article_type: deep-dive
+    applicability: A
+    primary_module: 9. Context
+    related_modules: [8. Concorrência, 11. Protobuf e gRPC]
+    primary_topics: [context.Context, cancelamento, deadlines]
+    secondary_topics: [goroutines orfas, propagacao, tracing, valores]
+    project_relation: implemented_component
+    project_components: [pkg/fsm/fsm.go, pkg/batch/batch.go]
+    use_for: explicar cancelamento local e contrastar propagacao futura
+    notes: Batch usa context.Background no flusher; propagacao gRPC ainda nao existe. Numeros citados no artigo sao contextuais.
+    verification: {official_check_required: true, benchmark_context_required: true}
+  - id: do-zero-a-um-operator-kubernetes
+    file: artigos-completos/pt/do-zero-a-um-operator-kubernetes.md
+    title: Do zero a um Operador Kubernetes que observa ConfigMaps
+    source_url: https://huncoding.com/do-zero-a-um-operator-kubernetes/
+    published: '2025-09-11'
+    article_type: tutorial
+    applicability: C
+    primary_module: Deploy / Kubernetes
+    related_modules: [Infraestrutura / Cloud]
+    primary_topics: [operator Kubernetes, controller, reconciliacao]
+    secondary_topics: [ConfigMaps, CRD]
+    project_relation: complementary
+    project_components: []
+    use_for: aprofundar o modelo de reconciliacao
+    notes: GKE no alvo nao implica necessidade de criar um operator.
+    verification: {official_check_required: true}
+  - id: genkit-go-framework-ia
+    file: artigos-completos/pt/genkit-go-framework-ia.md
+    title: "Genkit Go 1.0: o framework do Google para construir aplicações de IA em Go"
+    source_url: https://huncoding.com/genkit-go-framework-ia/
+    published: '2026-09-02'
+    article_type: ecosystem-survey
+    applicability: C
+    primary_module: IA
+    related_modules: [16. MCP, Ecossistema Go]
+    primary_topics: [Genkit, flows tipados, tool calling]
+    secondary_topics: [RAG, plugins, deployment HTTP]
+    project_relation: complementary
+    project_components: []
+    use_for: comparar frameworks de IA
+    notes: Nao implica dependencia Genkit no investigator; confirmar APIs e versoes.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: go-1-26-novidades
+    file: artigos-completos/pt/go-1-26-novidades.md
+    title: "Go 1.26: Novidades da Linguagem, Green Tea GC e outros"
+    source_url: https://huncoding.com/go-1-26-novidades/
+    published: '2026-02-23'
+    article_type: language-version
+    applicability: A
+    primary_module: 18. Go moderno
+    related_modules: [17. Performance, 5. Generics]
+    primary_topics: [Go 1.26, runtime, stdlib]
+    secondary_topics: [Green Tea GC, go fix, new]
+    project_relation: implemented_component
+    project_components: [go.mod]
+    use_for: contextualizar a versao declarada no modulo
+    notes: Comportamento normativo vem das release notes e da toolchain efetiva.
+    verification: {official_check_required: true, benchmark_context_required: true}
+  - id: go-cli-goreleaser-distribuindo-cli
+    file: artigos-completos/pt/go-cli-goreleaser-distribuindo-cli.md
+    title: Distribuindo uma CLI em Go com GoReleaser
+    source_url: https://huncoding.com/go-cli-goreleaser-distribuindo-cli/
+    published: '2026-04-01'
+    article_type: deployment
+    applicability: C
+    primary_module: Ecossistema Go
+    related_modules: [Deploy / Kubernetes]
+    primary_topics: [GoReleaser, distribuicao de CLI]
+    secondary_topics: [Cobra, GitHub Actions, Homebrew]
+    project_relation: complementary
+    project_components: []
+    use_for: comparar pipelines de release de binarios
+    notes: O projeto tem servicos, nao uma CLI distribuida; verificar versoes das ferramentas.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: go-colecoes-genericas-stdlib
+    file: artigos-completos/pt/go-colecoes-genericas-stdlib.md
+    title: "Proposta do time do Go para 1.28: Set, Map ordenado e heap genérico na stdlib"
+    source_url: https://huncoding.com/go-colecoes-genericas-stdlib/
+    published: '2026-09-17'
+    article_type: language-proposal
+    applicability: C
+    primary_module: 18. Go moderno
+    related_modules: [5. Generics]
+    primary_topics: [colecoes genericas propostas, sets, mapas ordenados]
+    secondary_topics: [heap generico, type parameters]
+    project_relation: complementary
+    project_components: []
+    use_for: discutir evolucao proposta da stdlib
+    notes: Exemplos de container/set e afins sao proposta; nao documentar como API disponivel.
+    verification: {status: proposal, official_check_required: true}
+  - id: go-concorrencia-prematura-problemas
+    file: artigos-completos/pt/go-concorrencia-prematura-problemas.md
+    title: A Maioria dos Serviços em Go Não Precisa Ser Concorrente
+    source_url: https://huncoding.com/go-concorrencia-prematura-problemas/
+    published: '2026-02-10'
+    article_type: architecture/opinion
+    applicability: A
+    primary_module: 8. Concorrência
+    related_modules: [17. Performance, Projeto / arquitetura]
+    primary_topics: [custo de concorrencia, filas, throughput]
+    secondary_topics: [latencia, goroutines, batch processing]
+    project_relation: implemented_component
+    project_components: [pkg/batch/batch.go, pkg/memcache/memcache.go]
+    use_for: questionar concorrencia desnecessaria e medir trade-offs
+    notes: Tese opinativa; nao remover mecanismos existentes com base no artigo. Benchmarks dependem do workload.
+    verification: {benchmark_context_required: true}
+  - id: go-erros-errors-is-as-wrapping-sentinel
+    file: artigos-completos/pt/go-erros-errors-is-as-wrapping-sentinel.md
+    title: "Erros em Go: errors.Is, errors.As, Wrapping e Sentinel Errors"
+    source_url: https://huncoding.com/go-erros-errors-is-as-wrapping-sentinel/
+    published: '2026-02-17'
+    article_type: tutorial
+    applicability: A
+    primary_module: 4. Erros
+    related_modules: [7. FSM, 6. Testes e tooling]
+    primary_topics: [sentinel errors, wrapping, errors.Is, errors.As]
+    secondary_topics: [contratos de API, diagnostico]
+    project_relation: implemented_component
+    project_components: [pkg/fsm/fsm.go, pkg/batch/batch.go]
+    use_for: explicar encadeamento e teste de erros
+    notes: Conferir contratos normativos na stdlib.
+    verification: {official_check_required: true}
+  - id: go-grpc-boas-praticas-producao
+    file: artigos-completos/pt/go-grpc-boas-praticas-producao.md
+    title: "Go e gRPC: como criar e usar APIs gRPC do zero"
+    source_url: https://huncoding.com/go-grpc-boas-praticas-producao/
+    published: '2026-01-21'
+    article_type: tutorial
+    applicability: B
+    primary_module: 11. Protobuf e gRPC
+    related_modules: [9. Context, 4. Erros]
+    primary_topics: [Protocol Buffers, gRPC, cliente e servidor]
+    secondary_topics: [streaming, status codes, deadlines]
+    project_relation: target_architecture
+    project_components: [gateway, ledger, fraud]
+    use_for: introduzir RPC e contratos entre servicos
+    notes: Proto existente nao comprova servidor ou cliente ativo; verificar grpc-go atual.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: go-ideal-para-ia-engenharia-software
+    file: artigos-completos/pt/go-ideal-para-ia-engenharia-software.md
+    title: Por que o Google diz que Go é a linguagem ideal para desenvolvimento assistido por IA
+    source_url: https://huncoding.com/go-ideal-para-ia-engenharia-software/
+    published: '2026-08-10'
+    article_type: architecture/opinion
+    applicability: C
+    primary_module: Ecossistema Go
+    related_modules: [IA, 1. Fundamentos]
+    primary_topics: [legibilidade, tipagem estatica, compilacao]
+    secondary_topics: [ferramentas, IA assistida, compatibilidade]
+    project_relation: complementary
+    project_components: []
+    use_for: debate sobre ergonomia e engenharia assistida
+    notes: Argumento de opiniao; nao usar como medicao de produtividade.
+    verification: {freshness_check_required: true}
+  - id: go-idiomatic-code
+    file: artigos-completos/pt/go-idiomatic-code.md
+    title: "Como Escrever Código Go Idiomático: Princípios e Práticas"
+    source_url: https://huncoding.com/go-idiomatic-code/
+    published: '2025-12-09'
+    article_type: tutorial
+    applicability: A
+    primary_module: 1. Fundamentos
+    related_modules: [3. Interfaces e arquitetura, 4. Erros, 9. Context]
+    primary_topics: [estilo idiomatico, erros explicitos, defer]
+    secondary_topics: [composicao, ponteiros, sync, nomes]
+    project_relation: implemented_component
+    project_components: [pkg/fsm/fsm.go, pkg/batch/batch.go, pkg/memcache/memcache.go]
+    use_for: revisar legibilidade e lifecycle no codigo real
+    notes: Regras locais de AGENTS.md prevalecem sobre conselhos gerais.
+    verification: {official_check_required: true}
+  - id: go-iterators-range-over-functions
+    file: artigos-completos/pt/go-iterators-range-over-functions.md
+    title: "Go Iterators: Range Over Functions do Jeito Certo"
+    source_url: https://huncoding.com/go-iterators-range-over-functions/
+    published: '2026-04-14'
+    article_type: deep-dive
+    applicability: C
+    primary_module: 18. Go moderno
+    related_modules: [1. Fundamentos, 5. Generics]
+    primary_topics: [range over func, iter.Seq, iter.Seq2]
+    secondary_topics: [iter.Pull, composicao, recursos]
+    project_relation: complementary
+    project_components: []
+    use_for: estudar iteradores existentes sem refatoracao automatica
+    notes: Verificar release e contrato oficial antes de afirmar detalhes de versao.
+    verification: {official_check_required: true}
+  - id: go-lambdas-short-function-literals-proposta
+    file: artigos-completos/pt/go-lambdas-short-function-literals-proposta.md
+    title: "Go e lambdas: oito anos de discussão na issue #21498"
+    source_url: https://huncoding.com/go-lambdas-short-function-literals-proposta/
+    published: '2026-03-23'
+    article_type: language-proposal
+    applicability: C
+    primary_module: 18. Go moderno
+    related_modules: [Ecossistema Go]
+    primary_topics: [sintaxe de funcoes literais, proposta 21498]
+    secondary_topics: [ergonomia, compatibilidade, discussao de linguagem]
+    project_relation: complementary
+    project_components: []
+    use_for: distinguir funcoes anonimas atuais da proposta sintatica
+    notes: Sintaxe discutida nao e API nem recurso disponivel por causa do artigo.
+    verification: {status: proposal, official_check_required: true}
+  - id: go-openapi-swagger-documentando-apis-rest
+    file: artigos-completos/pt/go-openapi-swagger-documentando-apis-rest.md
+    title: "Go e OpenAPI/Swagger: documentando APIs REST do jeito certo"
+    source_url: https://huncoding.com/go-openapi-swagger-documentando-apis-rest/
+    published: '2026-03-01'
+    article_type: tutorial
+    applicability: B
+    primary_module: 12. HTTP e SSE
+    related_modules: [3. Interfaces e arquitetura]
+    primary_topics: [OpenAPI, documentacao de API HTTP]
+    secondary_topics: [swaggo, schema-first, anotacoes]
+    project_relation: target_architecture
+    project_components: [gateway]
+    use_for: comparar estrategias de contrato HTTP
+    notes: Nao implica adocao de swaggo no gateway; confirmar versoes.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: go-platform-engineering-2025
+    file: artigos-completos/pt/go-platform-engineering-2025.md
+    title: Por que o Go ainda é a melhor linguagem para Platform Engineering em 2025
+    source_url: https://huncoding.com/go-platform-engineering-2025/
+    published: '2025-10-27'
+    article_type: architecture/opinion
+    applicability: C
+    primary_module: Infraestrutura / Cloud
+    related_modules: [Ecossistema Go, Deploy / Kubernetes]
+    primary_topics: [platform engineering, ecossistema Go]
+    secondary_topics: [ferramentas cloud-native, comparacao de linguagens]
+    project_relation: complementary
+    project_components: []
+    use_for: contexto de ecossistema e alternativas
+    notes: Dados de adocao e comparacoes de 2025 exigem atualizacao.
+    verification: {freshness_check_required: true, official_check_required: true}
+  - id: go-ponteiros-fracos-weak-pointer-cache
+    file: artigos-completos/pt/go-ponteiros-fracos-weak-pointer-cache.md
+    title: "Ponteiros Fracos em Go: Evitando Memory Leaks em Caches com weak.Pointer"
+    source_url: https://huncoding.com/go-ponteiros-fracos-weak-pointer-cache/
+    published: '2026-07-06'
+    article_type: deep-dive
+    applicability: A
+    primary_module: 10. Cache, sharding e TTL
+    related_modules: [18. Go moderno, 8. Concorrência]
+    primary_topics: [weak.Pointer, cache, memoria]
+    secondary_topics: [GC, runtime.AddCleanup, ownership]
+    project_relation: implemented_component
+    project_components: [pkg/memcache/memcache.go]
+    use_for: comparar expiracao TTL com referencias fracas
+    notes: memcache nao usa weak.Pointer; comparar alternativas sem atribuir a API ao componente.
+    verification: {official_check_required: true}
+  - id: go-rate-limiting-algorithms
+    file: artigos-completos/pt/go-rate-limiting-algorithms.md
+    title: "Rate Limiting em Go: Fixed Window, Sliding Window, Leaky Bucket e Token Bucket"
+    source_url: https://huncoding.com/go-rate-limiting-algorithms/
+    published: '2025-11-25'
+    article_type: tutorial
+    applicability: B
+    primary_module: 12. HTTP e SSE
+    related_modules: [8. Concorrência, 17. Performance]
+    primary_topics: [rate limiting, fixed window, sliding window]
+    secondary_topics: [token bucket, leaky bucket, distribuicao]
+    project_relation: target_architecture
+    project_components: [gateway]
+    use_for: comparar politicas de limite na borda
+    notes: Nao ha rate limiter funcional no gateway atual; validar recomendacoes operacionais.
+    verification: {official_check_required: true}
+  - id: go-serialization-benchmarks
+    file: artigos-completos/pt/go-serialization-benchmarks.md
+    title: "O Custo Invisível do JSON: Benchmarks Reais com Go e Outros Formatos"
+    source_url: https://huncoding.com/go-serialization-benchmarks/
+    published: '2025-12-01'
+    article_type: benchmark/comparison
+    applicability: B
+    primary_module: 11. Protobuf e gRPC
+    related_modules: [17. Performance, 12. HTTP e SSE]
+    primary_topics: [serializacao, JSON, Protobuf]
+    secondary_topics: [MsgPack, CBOR, alocacoes]
+    project_relation: target_architecture
+    project_components: [gateway, ledger, fraud]
+    use_for: metodologia de benchmark de formatos
+    notes: Nao extrapolar numeros para payloads, toolchains ou trafego deste projeto.
+    verification: {benchmark_context_required: true, official_check_required: true}
+  - id: go-survey-2025-gin-domina
+    file: artigos-completos/pt/go-survey-2025-gin-domina.md
+    title: "Go Survey 2025: Gin ainda domina e mais dados sobre o uso da linguagem"
+    source_url: https://huncoding.com/go-survey-2025-gin-domina/
+    published: '2026-04-28'
+    article_type: ecosystem-survey
+    applicability: C
+    primary_module: Ecossistema Go
+    related_modules: [12. HTTP e SSE, 5. Generics]
+    primary_topics: [survey, frameworks HTTP, adocao de generics]
+    secondary_topics: [logging, percepcao de erros]
+    project_relation: complementary
+    project_components: []
+    use_for: contexto historico de preferencias do ecossistema
+    notes: Percentuais e popularidade envelhecem; nao fundamentam escolha do roteador.
+    verification: {freshness_check_required: true, benchmark_context_required: true}
+  - id: go-synctest-testando-codigo-concorrente
+    file: artigos-completos/pt/go-synctest-testando-codigo-concorrente.md
+    title: "testing/synctest: O Jeito Certo de Testar Código Concorrente em Go"
+    source_url: https://huncoding.com/go-synctest-testando-codigo-concorrente/
+    published: '2026-06-07'
+    article_type: tutorial
+    applicability: A
+    primary_module: 6. Testes e tooling
+    related_modules: [8. Concorrência, 9. Context]
+    primary_topics: [testing/synctest, tempo controlado, testes concorrentes]
+    secondary_topics: [timers, goroutines, Wait]
+    project_relation: implemented_component
+    project_components: [pkg/batch/batch_test.go, pkg/memcache/memcache_test.go]
+    use_for: comparar testes atuais com alternativas de tempo controlado
+    notes: Testes atuais nao usam synctest; nenhuma mudanca de teste e implicada.
+    verification: {official_check_required: true}
+  - id: golang-avancado-curso-udemy
+    file: artigos-completos/pt/golang-avancado-curso-udemy.md
+    title: "Golang Avançado: construindo um processador de pagamentos de verdade"
+    source_url: https://huncoding.com/golang-avancado-curso-udemy/
+    published: '2026-10-01'
+    article_type: course-overview
+    applicability: C
+    primary_module: Projeto / arquitetura
+    related_modules: [7. FSM, 8. Concorrência, '10. Cache, sharding e TTL', '13. Postgres, idempotência e Outbox', 14. Kafka / Redpanda, 16. MCP]
+    primary_topics: [escopo do curso, processador de pagamentos, arquitetura-alvo]
+    secondary_topics: [FSM, batcher, outbox, MCP, pgvector, GKE]
+    project_relation: complementary
+    project_components: []
+    use_for: motivacao e relacao entre componentes do curso
+    notes: Visao canonica interna em docs/visao-do-projeto.md; codigo e testes definem o implementado. O artigo descreve componentes futuros como presentes.
+    verification: {freshness_check_required: true}
+  - id: gomaxprocs-kubernetes-problema
+    file: artigos-completos/pt/gomaxprocs-kubernetes-problema.md
+    title: "GOMAXPROCS e Kubernetes: o problema que todo mundo tinha e ninguém sabia"
+    source_url: https://huncoding.com/gomaxprocs-kubernetes-problema/
+    published: '2026-05-14'
+    article_type: deep-dive
+    applicability: B
+    primary_module: Deploy / Kubernetes
+    related_modules: [8. Concorrência, 17. Performance, 18. Go moderno]
+    primary_topics: [GOMAXPROCS, cgroups, CPU limits]
+    secondary_topics: [throttling, runtime Go]
+    project_relation: target_architecture
+    project_components: [gateway, ledger, fraud, investigator]
+    use_for: planejar medições de CPU em pods
+    notes: Detalhes de runtime e cgroups dependem da versao e ambiente.
+    verification: {official_check_required: true, benchmark_context_required: true}
+  - id: lambda-golang-coldstart
+    file: artigos-completos/pt/lambda-golang-coldstart.md
+    title: Por que o Cold Start do Go no AWS Lambda Ainda é Subestimado
+    source_url: https://huncoding.com/lambda-golang-coldstart/
+    published: '2025-10-20'
+    article_type: benchmark/comparison
+    applicability: C
+    primary_module: Infraestrutura / Cloud
+    related_modules: [17. Performance, Deploy / Kubernetes]
+    primary_topics: [AWS Lambda, cold start, benchmark]
+    secondary_topics: [Init Duration, tamanho do binario, arquitetura CPU]
+    project_relation: complementary
+    project_components: []
+    use_for: metodologia de medicao de cold start
+    notes: O alvo e GKE, nao Lambda; numeros dependem de runtime e infraestrutura.
+    verification: {benchmark_context_required: true, freshness_check_required: true, official_check_required: true}
+  - id: llm-do-zero-como-maquinas-leem-texto
+    file: artigos-completos/pt/llm-do-zero-como-maquinas-leem-texto.md
+    title: "LLM do Zero em Go: como máquinas leem texto"
+    source_url: https://huncoding.com/llm-do-zero-como-maquinas-leem-texto/
+    published: '2026-05-04'
+    article_type: deep-dive
+    applicability: C
+    primary_module: IA
+    related_modules: [1. Fundamentos, 16. MCP]
+    primary_topics: [UTF-8, strings Go, tokenizacao]
+    secondary_topics: [BPE, bytes, runes]
+    project_relation: complementary
+    project_components: []
+    use_for: modelo mental de texto e tokens para IA
+    notes: Nao implica construir um LLM ou tokenizador no projeto.
+    verification: {official_check_required: true}
+  - id: localstack-mais-caro-que-aws
+    file: artigos-completos/pt/localstack-mais-caro-que-aws.md
+    title: LocalStack ficou mais caro do que testar na AWS
+    source_url: https://huncoding.com/localstack-mais-caro-que-aws/
+    published: '2026-04-07'
+    article_type: benchmark/comparison
+    applicability: C
+    primary_module: Infraestrutura / Cloud
+    related_modules: [6. Testes e tooling, Ecossistema Go]
+    primary_topics: [LocalStack, AWS, custos de testes]
+    secondary_topics: [MiniStack, Testcontainers, CI]
+    project_relation: complementary
+    project_components: []
+    use_for: comparar opcoes de teste de infraestrutura
+    notes: Precos, free tiers e disponibilidade mudam; AWS nao e o alvo principal.
+    verification: {freshness_check_required: true, official_check_required: true, benchmark_context_required: true}
+  - id: migrando-go-para-kubernetes
+    file: artigos-completos/pt/migrando-go-para-kubernetes.md
+    title: "Migrando aplicações Go para Kubernetes: problemas reais e soluções"
+    source_url: https://huncoding.com/migrando-go-para-kubernetes/
+    published: '2026-01-20'
+    article_type: deployment
+    applicability: B
+    primary_module: Deploy / Kubernetes
+    related_modules: [9. Context, 15. Observabilidade]
+    primary_topics: [Kubernetes, health checks, graceful shutdown]
+    secondary_topics: [ConfigMaps, Secrets, discovery, resource limits]
+    project_relation: target_architecture
+    project_components: [gateway, ledger, fraud, investigator]
+    use_for: checklist conceitual de migracao de servicos
+    notes: Nao implica manifests ou probes existentes; confirmar recomendacoes atuais.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: mvc-go-problemas-arquitetura-moderna
+    file: artigos-completos/pt/mvc-go-problemas-arquitetura-moderna.md
+    title: Por que Engenheiros Sênior Estão Abandonando MVC em Go
+    source_url: https://huncoding.com/mvc-go-problemas-arquitetura-moderna/
+    published: '2025-10-07'
+    article_type: architecture/opinion
+    applicability: B
+    primary_module: 3. Interfaces e arquitetura
+    related_modules: [Projeto / arquitetura, 2. Modelagem com Go]
+    primary_topics: [MVC, arquitetura hexagonal, ports and adapters]
+    secondary_topics: [use cases, dependencias, migracao gradual]
+    project_relation: target_architecture
+    project_components: [gateway, ledger, fraud, investigator]
+    use_for: discutir trade-offs de fronteiras arquiteturais
+    notes: Opiniao nao prova que camadas completas existam neste checkout.
+    verification: {official_check_required: false}
+  - id: observabilidade-one-liner-go-o11y-last9-tracekit
+    file: artigos-completos/pt/observabilidade-one-liner-go-o11y-last9-tracekit.md
+    title: Observabilidade one-liner em Go com o11y, Last9 Agent e TraceKit
+    source_url: https://huncoding.com/observabilidade-one-liner-go-o11y-last9-tracekit/
+    published: '2026-03-17'
+    article_type: tutorial
+    applicability: B
+    primary_module: 15. Observabilidade
+    related_modules: [12. HTTP e SSE, 9. Context]
+    primary_topics: [tracing, logs, metricas, instrumentacao]
+    secondary_topics: [o11y, Last9, TraceKit]
+    project_relation: target_architecture
+    project_components: [gateway, ledger, fraud, investigator]
+    use_for: comparar estrategias de instrumentacao
+    notes: Nao implica adocao desse stack; confirmar APIs e licencas atuais.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: provider-terraform-customizado
+    file: artigos-completos/pt/provider-terraform-customizado.md
+    title: Criando um Provider Terraform Customizado do Zero
+    source_url: https://huncoding.com/provider-terraform-customizado/
+    published: '2025-09-14'
+    article_type: tutorial
+    applicability: C
+    primary_module: Infraestrutura / Cloud
+    related_modules: [Ecossistema Go]
+    primary_topics: [Terraform provider, plugin SDK]
+    secondary_topics: [recursos CRUD, API interna, testes]
+    project_relation: complementary
+    project_components: []
+    use_for: entender extensibilidade de ferramentas IaC
+    notes: Usar Terraform no projeto nao exige escrever um provider proprio.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: redis-like-golang-project
+    file: artigos-completos/pt/redis-like-golang-project.md
+    title: "Redis-like KV Store: Um Projeto Educacional em Go com Clean Architecture"
+    source_url: https://huncoding.com/redis-like-golang-project/
+    published: '2025-11-06'
+    article_type: case-study
+    applicability: A
+    primary_module: 10. Cache, sharding e TTL
+    related_modules: [8. Concorrência, 3. Interfaces e arquitetura]
+    primary_topics: [KV em memoria, TTL, concorrencia]
+    secondary_topics: [Clean Architecture, AOF, protocolo texto]
+    project_relation: implemented_component
+    project_components: [pkg/memcache/memcache.go]
+    use_for: comparar cache local com servidor Redis-like educativo
+    notes: memcache nao e servidor Redis, nao usa AOF, DI por Wire nem protocolo externo.
+    verification: {official_check_required: false}
+  - id: sistema-observabilidade-opentelemetry-go
+    file: artigos-completos/pt/sistema-observabilidade-opentelemetry-go.md
+    title: "Observabilidade Distribuída: Kafka + Jaeger + Go para Tracing Resiliente"
+    source_url: https://huncoding.com/sistema-observabilidade-opentelemetry-go/
+    published: '2025-09-22'
+    article_type: case-study
+    applicability: B
+    primary_module: 15. Observabilidade
+    related_modules: [14. Kafka / Redpanda, 9. Context]
+    primary_topics: [tracing distribuido, Kafka, Jaeger]
+    secondary_topics: [buffer de spans, tolerancia a falhas, replay]
+    project_relation: target_architecture
+    project_components: [gateway, ledger, fraud, investigator]
+    use_for: comparar estrategias de transporte de traces
+    notes: O projeto nao adotou Kafka como buffer de traces; afirmacoes de zero perda exigem garantias verificadas.
+    verification: {official_check_required: true, freshness_check_required: true}
+  - id: terraform-how-it-works
+    file: artigos-completos/pt/terraform-how-it-works.md
+    title: O que o Terraform realmente executa quando roda seu provider em Go
+    source_url: https://huncoding.com/terraform-how-it-works/
+    published: '2025-11-11'
+    article_type: deep-dive
+    applicability: B
+    primary_module: Infraestrutura / Cloud
+    related_modules: [11. Protobuf e gRPC, Ecossistema Go]
+    primary_topics: [Terraform Plugin Protocol, providers Go]
+    secondary_topics: [RPC, estado, plan e apply]
+    project_relation: target_architecture
+    project_components: [GCP]
+    use_for: entender execucao da IaC do alvo cloud
+    notes: Uso de Terraform nao implica provider proprio; verificar versao do protocolo. Numeros de ida e volta sao contextuais.
+    verification: {official_check_required: true, benchmark_context_required: true}
+  - id: vercel-vs-netlify-vs-railway-guerra-deploys
+    file: artigos-completos/pt/vercel-vs-netlify-vs-railway-guerra-deploys.md
+    title: "Vercel vs Netlify vs Railway: A Guerra dos Deploys"
+    source_url: https://huncoding.com/vercel-vs-netlify-vs-railway-guerra-deploys/
+    published: '2025-09-26'
+    article_type: benchmark/comparison
+    applicability: C
+    primary_module: Ecossistema Go
+    related_modules: [Deploy / Kubernetes, Infraestrutura / Cloud]
+    primary_topics: [plataformas de deploy, custos, comparacao]
+    secondary_topics: [Vercel, Netlify, Railway]
+    project_relation: complementary
+    project_components: []
+    use_for: contraste de alternativas de hospedagem
+    notes: Precos e ofertas envelhecem; nenhuma plataforma substitui automaticamente GKE no alvo.
+    verification: {freshness_check_required: true, official_check_required: true, benchmark_context_required: true}

@@ -1,10 +1,19 @@
 # Concorrência: memória compartilhada no cache
 
-**Estado:** parcial — memória compartilhada, locks, channel de sinalização e `select` têm laboratório real em `pkg/memcache`. Channels de dados, pipelines e coordenação por `context.Context` aguardam outros componentes.
+**Estado:** parcial — `pkg/memcache` oferece memória compartilhada, locks e sinalização; `pkg/batch` oferece channel de dados, timer, `WaitGroup` e cancelamento local. Pipelines de serviços e propagação distribuída por `context.Context` ainda aguardam implementação.
 
 ## Concorrência não é paralelismo
 
 Concorrência é a capacidade de múltiplas tarefas progredirem de forma intercalada. Paralelismo é a execução simultânea de tarefas. `go cache.janitor(...)` introduz concorrência: o runtime decide quando essa goroutine e as chamadas de cache executam. A execução paralela depende do scheduler, CPUs disponíveis e workload; uma goroutine não significa, por definição, execução paralela.
+
+## Dois modelos no mesmo repositório
+
+| Componente | Estado compartilhado | Coordenação principal | Encerramento |
+|---|---|---|---|
+| `pkg/memcache` | mapas por shard | `RWMutex` e channel de sinalização | `Close` fecha `stop`; não espera o janitor terminar |
+| `pkg/batch` | lote pendente pertence ao loop | channel de requisições e `select` com timer | `Close` fecha a fila e `Wait` pela goroutine |
+
+O batcher ilustra channel **de dados**: cada `Submit` envia uma requisição com item e canal de resposta. O cache usa `stop` como channel **de sinalização**, sem payload. Leia o fluxo completo em [Canais de dados e batcher](batcher.md). Nenhum dos dois modelos é universal; a escolha depende de quem deve possuir e alterar o estado.
 
 ## O problema concreto
 
@@ -218,6 +227,8 @@ Janitor é uma estratégia de implementação, não propriedade obrigatória de 
 O lifecycle efetivo é `New → cria stop → inicia janitor → select aguarda ticker ou stop → Close → fecha stop → janitor observa stop → retorna`. `New` cria tanto o cache quanto a goroutine do janitor. Portanto, quem possui o cache precisa chamar `Close` quando não for mais usá-lo. `Close` usa `sync.Once` para fechar `stop` uma única vez, evitando panic por fechar um channel repetidamente.
 
 Não há `WaitGroup`, channel de confirmação nem outro mecanismo para esperar a goroutine terminar; assim, `Close` sinaliza o encerramento, mas não confirma ao chamador que o janitor já retornou. `stop` significa “pare”; um `WaitGroup` serviria conceitualmente para “espere terminar”. Os testes usam `sync.WaitGroup` para aguardar as goroutines de incremento e acesso concorrente, mas o cache não o usa para seu lifecycle. Também não há teste específico para chamadas repetidas de `Close`; os testes usam `defer cache.Close()` para liberar o recurso criado.
+
+O batcher faz a outra combinação: `New` chama `wg.Add(1)` antes de iniciar o loop, o loop faz `defer wg.Done()`, e `Close` executa `wg.Wait()` depois de fechar a fila. A ordem `Add` antes de `go` evita que `Wait` observe contador zero antes de a goroutine ser registrada. Isso é coordenação de lifecycle, não substituto para o channel que entrega trabalho.
 
 Se um owner abandonar um recurso que iniciou uma goroutine sem estratégia de parada, a goroutine pode continuar esperando e se tornar um goroutine leak. O código não demonstra esse vazamento: ele fornece `Close` e `stop` justamente como estratégia de encerramento. O risco permanece para quem não chama `Close`.
 

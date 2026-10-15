@@ -16,3 +16,5 @@ node_modules/
 deploy/terraform/.db_password.local
 deploy/terraform/.env.gcp
 deploy/terraform/*.log
+# Material-fonte do curso; usado apenas localmente para gerar documentação.
+materiais/slides/*.pdf

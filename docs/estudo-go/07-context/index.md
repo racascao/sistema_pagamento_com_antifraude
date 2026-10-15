@@ -1,12 +1,14 @@
 # Context
 
-**Estado:** Planejado. Veja o [roadmap](../roadmap.md) para a sequência e os pré-requisitos.
+**Estado:** parcial. Há cancelamento local nos componentes genéricos; a propagação entre serviços continua planejada. Veja o [roadmap](../roadmap.md) para a sequência.
 
 ## Onde isso aparece no projeto
 
 `Machine.Run` verifica `ctx.Err()` no início de cada hop e passa `ctx` ao handler. A propagação gateway → ledger → fraud ainda não existe em Go.
 
-`Context` será aprofundado quando existir uma cadeia real de operações canceláveis entre serviços. O cache não o utiliza e não será usado artificialmente como exemplo deste módulo.
+`Batcher.Submit` verifica `ctx.Err()` antes de enfileirar e seleciona entre a fila, `ctx.Done()` e a resposta; isso evita que um chamador fique preso quando sua espera expira. Depois de aceito, porém, o lote chama o flusher com `context.Background()`: o cancelamento daquele chamador não cancela o trabalho compartilhado. O cache não usa contexto.
+
+`Context` será aprofundado quando existir uma cadeia real de operações canceláveis entre serviços. Não há propagação gRPC, deadline distribuído ou causa de cancelamento demonstrável neste checkout.
 
 Fontes: `pkg/fsm/fsm.go`, `pkg/fsm/fsm_test.go`; [arquitetura](../../architecture.md) para fluxo planejado.
 
